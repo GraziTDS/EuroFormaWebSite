@@ -1,0 +1,56 @@
+<div class="euro-page">
+  <h2>Relatórios</h2>
+
+  <mat-button-toggle-group [value]="tipoSelecionado()" (change)="selecionar($event.value)">
+    @for (tipo of tipos; track tipo.valor) {
+      <mat-button-toggle [value]="tipo.valor">{{ tipo.rotulo }}</mat-button-toggle>
+    }
+  </mat-button-toggle-group>
+
+  @if (relatorio(); as r) {
+    <div class="stats">
+      <app-stat-card label="No filtro" [value]="r.noFiltro" />
+      <app-stat-card label="Ativos" [value]="r.ativos" />
+      <app-stat-card label="Concluídos" [value]="r.concluidos" />
+      <app-stat-card label="Desistentes" [value]="r.desistentes" />
+    </div>
+
+    @switch (r.tipo) {
+      @case ('MATRICULAS_POR_CURSO') {
+        <app-section-card titulo="Matrículas por curso">
+          @for (item of r.matriculasPorCurso; track item.chave) {
+            <div class="linha"><span>{{ item.chave }}</span><strong>{{ item.total }}</strong></div>
+          }
+        </app-section-card>
+      }
+      @case ('FREQUENCIA_POR_EDUCANDO') {
+        <app-section-card titulo="Frequência por educando" subtitulo="Ranking de presença individual">
+          @for (item of r.frequenciaPorEducando; track item.nome) {
+            <div class="linha"><span>{{ item.nome }}</span><strong>{{ item.frequencia }}%</strong></div>
+          }
+        </app-section-card>
+      }
+      @case ('CONCLUSAO_EVASAO') {
+        <app-section-card titulo="Conclusão & evasão">
+          <div class="linha"><span>Ativos</span><strong>{{ r.ativos }}</strong></div>
+          <div class="linha"><span>Concluídos</span><strong>{{ r.concluidos }}</strong></div>
+          <div class="linha"><span>Desistentes</span><strong>{{ r.desistentes }}</strong></div>
+        </app-section-card>
+      }
+      @case ('MOTIVOS_DESISTENCIA') {
+        <app-section-card titulo="Motivos de desistência">
+          @if (r.motivosDesistencia && r.motivosDesistencia.length > 0) {
+            @for (item of r.motivosDesistencia; track item.nome) {
+              <div class="motivo">
+                <strong>{{ item.nome }}</strong>
+                <p>{{ item.motivo ?? 'Motivo não informado.' }}</p>
+              </div>
+            }
+          } @else {
+            <p>Nenhum registro de desistência no momento.</p>
+          }
+        </app-section-card>
+      }
+    }
+  }
+</div>

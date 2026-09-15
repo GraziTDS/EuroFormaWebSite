@@ -1,0 +1,61 @@
+@if (perfil(); as p) {
+  <div class="euro-page">
+    <app-section-card titulo="Olá, {{ p.nome.split(' ')[0] }}!" [subtitulo]="p.curso">
+      <p>Progresso do curso</p>
+      <mat-progress-bar mode="determinate" [value]="p.progresso" />
+      <span class="home__progresso-valor">{{ p.progresso }}%</span>
+      <a mat-stroked-button routerLink="/educando/perfil">Ver meu perfil completo</a>
+    </app-section-card>
+
+    <div class="home__stats">
+      <app-stat-card label="Frequência" [value]="p.frequencia + '%'" />
+      <app-stat-card label="Média" [value]="p.media" />
+      <app-stat-card label="Status" [value]="p.status" />
+      <app-stat-card label="Iniciado em" [value]="p.iniciadoEm ?? '—'" />
+    </div>
+
+    @if (p.boletim.length > 0) {
+      <app-section-card titulo="Boletim" subtitulo="Notas e faltas por disciplina">
+        @for (disciplina of p.boletim; track disciplina.nome) {
+          <div class="boletim-item">
+            <div class="boletim-item__cabecalho">
+              <strong>{{ disciplina.nome }}</strong>
+              <span>{{ disciplina.presencasRealizadas }}/{{ disciplina.presencasTotal }} presenças</span>
+            </div>
+            <div class="boletim-item__detalhes">
+              <span>Faltas: {{ disciplina.faltas }}</span>
+              <span>Frequência: {{ disciplina.frequenciaPercentual }}%</span>
+              @if (disciplina.md1 !== null) {
+                <span>MD 1º sem.: {{ disciplina.md1 }}</span>
+              }
+              @if (disciplina.mediaParcial !== null) {
+                <span>Média parcial: {{ disciplina.mediaParcial }}</span>
+              }
+            </div>
+          </div>
+        }
+      </app-section-card>
+    }
+
+    <app-section-card titulo="Próximos eventos">
+      @for (evento of eventos(); track evento.id) {
+        <div class="evento-item">
+          <div>
+            <strong>{{ evento.titulo }}</strong>
+            <p>{{ evento.descricao }}</p>
+            <span class="evento-item__meta">{{ evento.local }} · {{ evento.dataHora | date: 'dd/MM/yyyy HH:mm' }}</span>
+            <span class="evento-item__meta">{{ evento.vagasOcupadas }}/{{ evento.vagasTotal }} vagas ocupadas</span>
+          </div>
+          <button
+            mat-flat-button
+            [color]="evento.inscrito ? undefined : 'primary'"
+            [disabled]="evento.inscrito || evento.vagasOcupadas >= evento.vagasTotal"
+            (click)="inscrever(evento)"
+          >
+            {{ evento.inscrito ? '✓ Inscrito' : 'Inscrever-se' }}
+          </button>
+        </div>
+      }
+    </app-section-card>
+  </div>
+}

@@ -1,0 +1,61 @@
+.home__progresso-valor {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.home__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.boletim-item {
+  border-bottom: 1px solid var(--neutral-border);
+  padding-bottom: 10px;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.boletim-item__cabecalho {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.boletim-item__detalhes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.evento-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--neutral-border);
+  padding-bottom: 12px;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+}
+
+.evento-item__meta {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+}

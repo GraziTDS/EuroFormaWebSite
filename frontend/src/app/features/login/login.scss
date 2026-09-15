@@ -1,0 +1,108 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.login__hero {
+  background: linear-gradient(160deg, var(--euro-blue-dark), var(--euro-blue));
+  color: white;
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.login__brand {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.login__institute {
+  letter-spacing: 2px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.login__hero h1 {
+  font-size: 28px;
+  margin: 8px 0;
+}
+
+.login__hero p {
+  max-width: 480px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.login__chips {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+
+  span {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}
+
+.login__form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: var(--neutral-bg);
+}
+
+.login__form {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  h2 {
+    margin: 0 0 4px;
+    color: var(--euro-blue-dark);
+  }
+}
+
+.login__form-subtitle {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 0 0 16px;
+}
+
+.login__erro {
+  color: var(--status-desistente);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.login__esqueci {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--euro-blue);
+  text-align: center;
+  text-decoration: none;
+}
+
+.login__aviso {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}

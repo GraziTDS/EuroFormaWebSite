@@ -1,0 +1,34 @@
+<div class="login">
+  <section class="login__hero">
+    <span class="login__brand">euroForma</span>
+    <span class="login__institute">INSTITUTO EUROFARMA</span>
+    <h1>Esqueceu sua senha?</h1>
+    <p>Informe o e-mail cadastrado e enviaremos um link para você criar uma nova senha.</p>
+  </section>
+
+  <section class="login__form-panel">
+    @if (!enviado()) {
+      <form class="login__form" [formGroup]="form" (ngSubmit)="enviar()">
+        <h2>Redefinir senha</h2>
+        <p class="login__form-subtitle">Enviaremos um link de redefinição para o seu e-mail.</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>E-mail</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit">Enviar link</button>
+        <a routerLink="/login" class="login__esqueci">Voltar para o login</a>
+      </form>
+    } @else {
+      <div class="login__form">
+        <h2>Verifique seu e-mail</h2>
+        <p class="login__form-subtitle">
+          Se o e-mail informado estiver cadastrado, você receberá em instantes um link para redefinir sua
+          senha.
+        </p>
+        <a routerLink="/login" class="login__esqueci">Voltar para o login</a>
+      </div>
+    }
+  </section>
+</div>

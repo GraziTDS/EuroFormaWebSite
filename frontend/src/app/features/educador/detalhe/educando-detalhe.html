@@ -1,0 +1,62 @@
+@if (perfil(); as p) {
+  <div class="euro-page">
+    <app-section-card [titulo]="p.nome" [subtitulo]="p.curso">
+      <app-status-chip [status]="p.status" />
+    </app-section-card>
+
+    <app-section-card titulo="Gestão do aluno">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="statusSelecionado">
+          @for (opcao of opcoesStatus; track opcao.valor) {
+            <mat-option [value]="opcao.valor">{{ opcao.rotulo }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      @if (statusSelecionado() === 'DESISTENTE') {
+        <mat-form-field appearance="outline">
+          <mat-label>Motivo da desistência</mat-label>
+          <textarea matInput rows="2" [(ngModel)]="motivoDesistencia"></textarea>
+        </mat-form-field>
+      }
+
+      <label class="campo-slider">
+        <span>Frequência: {{ frequenciaSelecionada() }}%</span>
+        <mat-slider min="0" max="100" step="1" discrete>
+          <input matSliderThumb [(ngModel)]="frequenciaSelecionada" />
+        </mat-slider>
+      </label>
+
+      <button mat-flat-button color="primary" [disabled]="salvando()" (click)="salvar()">
+        {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
+      </button>
+    </app-section-card>
+
+    @if (auditoria().length > 0) {
+      <app-section-card titulo="Histórico de alterações" subtitulo="Auditoria de status e frequência">
+        @for (item of auditoria(); track item.criadoEm + item.campo) {
+          <div class="auditoria-item">
+            <span>{{ item.criadoEm | date: 'dd/MM/yyyy HH:mm' }} — {{ item.autorNome }}</span>
+            <strong>{{ item.campo }}: {{ item.valorAnterior }} → {{ item.valorNovo }}</strong>
+          </div>
+        }
+      </app-section-card>
+    }
+
+    <app-section-card titulo="Dados pessoais">
+      <div class="campo"><span>E-mail</span><strong>{{ p.email }}</strong></div>
+      <div class="campo"><span>Telefone</span><strong>{{ p.telefone ?? '—' }}</strong></div>
+      <div class="campo"><span>CPF</span><strong>{{ p.cpf ?? '—' }}</strong></div>
+      <div class="campo"><span>Progresso</span><strong>{{ p.progresso }}%</strong></div>
+      <div class="campo"><span>Média</span><strong>{{ p.media }}</strong></div>
+    </app-section-card>
+
+    @if (p.endereco) {
+      <app-section-card titulo="Endereço">
+        <div class="campo"><span>Rua</span><strong>{{ p.endereco.rua ?? '—' }}</strong></div>
+        <div class="campo"><span>Cidade/UF</span><strong>{{ p.endereco.cidade }}/{{ p.endereco.uf }}</strong></div>
+      </app-section-card>
+    }
+  </div>
+}

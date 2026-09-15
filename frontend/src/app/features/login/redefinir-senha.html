@@ -1,0 +1,33 @@
+<div class="login">
+  <section class="login__hero">
+    <span class="login__brand">euroForma</span>
+    <span class="login__institute">INSTITUTO EUROFARMA</span>
+    <h1>Defina sua nova senha</h1>
+    <p>Escolha uma nova senha de acesso para continuar usando a plataforma.</p>
+  </section>
+
+  <section class="login__form-panel">
+    @if (sucesso()) {
+      <div class="login__form">
+        <h2>Senha redefinida!</h2>
+        <p class="login__form-subtitle">Você já pode entrar com sua nova senha. Redirecionando...</p>
+      </div>
+    } @else {
+      <form class="login__form" [formGroup]="form" (ngSubmit)="redefinir()">
+        <h2>Nova senha</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nova senha</mat-label>
+          <input matInput type="password" formControlName="novaSenha" />
+        </mat-form-field>
+
+        @if (erro()) {
+          <p class="login__erro">{{ erro() }}</p>
+        }
+
+        <button mat-flat-button color="primary" type="submit">Salvar nova senha</button>
+        <a routerLink="/login" class="login__esqueci">Voltar para o login</a>
+      </form>
+    }
+  </section>
+</div>

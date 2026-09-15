@@ -1,0 +1,51 @@
+mat-form-field {
+  width: 100%;
+}
+
+.campo-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 8px 0 16px;
+
+  mat-slider {
+    width: 100%;
+  }
+}
+
+.campo {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--neutral-border);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  span {
+    color: var(--text-secondary);
+  }
+}
+
+.auditoria-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--neutral-border);
+  font-size: 13px;
+
+  span {
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

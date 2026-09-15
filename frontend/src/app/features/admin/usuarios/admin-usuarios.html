@@ -1,0 +1,19 @@
+<div class="euro-page">
+  <h2>Gestão de usuários</h2>
+  <p class="aviso">Apenas administradores do Instituto Eurofarma podem alterar permissões.</p>
+
+  <app-section-card titulo="Educadores e coordenadores">
+    @for (educador of educadores(); track educador.id) {
+      <div class="linha">
+        <div class="linha__info">
+          <strong>{{ educador.nome }}</strong>
+          <span>{{ educador.email }} · {{ educador.papel }} · {{ educador.turmas }} turma(s)</span>
+          <span>Último acesso: {{ educador.ultimoAcesso ? (educador.ultimoAcesso | date: 'dd/MM/yyyy') : '—' }}</span>
+        </div>
+        <mat-slide-toggle [checked]="educador.ativo" (change)="alternarAtivo(educador)">
+          {{ educador.ativo ? 'Ativo' : 'Inativo' }}
+        </mat-slide-toggle>
+      </div>
+    }
+  </app-section-card>
+</div>

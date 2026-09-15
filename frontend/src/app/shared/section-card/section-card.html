@@ -1,0 +1,11 @@
+<mat-card class="section-card" appearance="outlined">
+  <div class="section-card__header">
+    <h3>{{ titulo() }}</h3>
+    @if (subtitulo()) {
+      <p>{{ subtitulo() }}</p>
+    }
+  </div>
+  <div class="section-card__content">
+    <ng-content />
+  </div>
+</mat-card>

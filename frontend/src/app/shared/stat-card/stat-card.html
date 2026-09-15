@@ -1,0 +1,7 @@
+<mat-card class="stat-card" appearance="outlined">
+  <span class="stat-card__label">{{ label() }}</span>
+  <span class="stat-card__value">{{ value() }}</span>
+  @if (hint()) {
+    <span class="stat-card__hint">{{ hint() }}</span>
+  }
+</mat-card>

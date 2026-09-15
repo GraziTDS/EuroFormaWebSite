@@ -1,0 +1,27 @@
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.linha {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.motivo {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--neutral-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+}

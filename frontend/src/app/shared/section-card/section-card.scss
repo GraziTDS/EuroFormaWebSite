@@ -1,0 +1,25 @@
+.section-card {
+  padding: 20px 24px;
+}
+
+.section-card__header {
+  margin-bottom: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 17px;
+    color: var(--euro-blue-dark);
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+}
+
+.section-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

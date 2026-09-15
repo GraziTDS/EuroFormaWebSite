@@ -1,0 +1,74 @@
+<div class="login">
+  <section class="login__hero">
+    <span class="login__brand">euroForma</span>
+    <span class="login__institute">INSTITUTO EUROFARMA</span>
+    <h1>Sua vida move a nossa.</h1>
+    <p>
+      A plataforma do Projeto Educandos do Instituto Eurofarma reúne turmas, notas, frequência e
+      oportunidades de capacitação para pessoas em situação de vulnerabilidade social — em um só lugar,
+      para educandos, educadores e gestão institucional.
+    </p>
+    <div class="login__chips">
+      <span>+700 educandos por semestre</span>
+      <span>4 cursos ativos</span>
+    </div>
+  </section>
+
+  <section class="login__form-panel">
+    <form class="login__form" [formGroup]="form" (ngSubmit)="entrar()">
+      <h2>Entrar</h2>
+      <p class="login__form-subtitle">Acesse com o e-mail e senha cadastrados pelo Instituto Eurofarma.</p>
+
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="username" />
+        @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+          <mat-error>Informe o e-mail</mat-error>
+        }
+        @if (form.controls.email.hasError('email')) {
+          <mat-error>E-mail inválido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          [type]="ocultarSenha() ? 'password' : 'text'"
+          formControlName="senha"
+          autocomplete="current-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="ocultarSenha.set(!ocultarSenha())"
+          [attr.aria-label]="'Mostrar senha'"
+        >
+          <mat-icon>{{ ocultarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.senha.hasError('required') && form.controls.senha.touched) {
+          <mat-error>Informe a senha</mat-error>
+        }
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="login__erro">{{ erro() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="carregando()">
+        @if (carregando()) {
+          <mat-spinner diameter="20" />
+        } @else {
+          Entrar
+        }
+      </button>
+
+      <a routerLink="/esqueci-senha" class="login__esqueci">Esqueci minha senha</a>
+
+      <p class="login__aviso">
+        Acesso restrito a educandos, educadores e administradores cadastrados pelo Instituto Eurofarma.
+      </p>
+    </form>
+  </section>
+</div>

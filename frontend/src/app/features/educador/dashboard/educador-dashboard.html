@@ -1,0 +1,35 @@
+@if (dados(); as d) {
+  <div class="euro-page">
+    <div class="dashboard__topo">
+      <h2>Dashboard</h2>
+      <a mat-flat-button color="primary" routerLink="/educador/cadastro">Cadastrar educando</a>
+    </div>
+
+    <div class="dashboard__stats">
+      <app-stat-card label="Total de alunos" [value]="d.totalAlunos" />
+      <app-stat-card label="Alunos ativos" [value]="d.ativos" />
+      <app-stat-card label="Concluintes" [value]="d.concluintes" />
+      <app-stat-card label="Taxa de conclusão" [value]="d.taxaConclusao + '%'" />
+    </div>
+
+    <app-section-card titulo="Distribuição por status">
+      @for (par of d.distribuicaoPorStatus | keyvalue; track par.key) {
+        <div class="distribuicao-item">
+          <app-status-chip [status]="$any(par.key)" />
+          <span>{{ par.value }}</span>
+        </div>
+      }
+    </app-section-card>
+
+    <app-section-card titulo="Educandos recentes">
+      @for (educando of d.recentes; track educando.id) {
+        <a class="educando-item" [routerLink]="['/educador/educandos', educando.id]">
+          <span>{{ educando.nome }}</span>
+          <span class="educando-item__curso">{{ educando.curso }}</span>
+          <app-status-chip [status]="educando.status" />
+        </a>
+      }
+      <a routerLink="/educador/educandos">Ver todos →</a>
+    </app-section-card>
+  </div>
+}

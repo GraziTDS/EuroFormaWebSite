@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: euroforma-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: euroforma
+      POSTGRES_USER: euroforma
+      POSTGRES_PASSWORD: euroforma
+    ports:
+      - "5432:5432"
+    volumes:
+      - euroforma-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U euroforma -d euroforma"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: euroforma-mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025" # SMTP (usado pelo backend em dev)
+      - "8025:8025" # UI web para ver os e-mails enviados
+
+volumes:
+  euroforma-postgres-data:

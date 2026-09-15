@@ -1,0 +1,52 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--neutral-bg);
+}
+
+.shell__toolbar {
+  background: var(--euro-blue-dark) !important;
+  color: white;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.shell__brand {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.shell__nav {
+  display: flex;
+  gap: 4px;
+
+  a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+
+    &.ativo {
+      color: white;
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 600;
+    }
+  }
+}
+
+.shell__spacer {
+  flex: 1 1 auto;
+}
+
+.shell__usuario {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.shell__conteudo {
+  flex: 1 1 auto;
+}

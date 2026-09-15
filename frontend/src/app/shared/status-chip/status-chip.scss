@@ -1,0 +1,29 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip--inscrito {
+  color: var(--status-inscrito);
+  background: var(--status-inscrito-bg);
+}
+
+.chip--em_curso {
+  color: var(--status-em-curso);
+  background: color-mix(in srgb, var(--status-em-curso) 14%, white);
+}
+
+.chip--concluido {
+  color: var(--status-concluido);
+  background: color-mix(in srgb, var(--status-concluido) 14%, white);
+}
+
+.chip--desistente {
+  color: var(--status-desistente);
+  background: var(--status-desistente-bg);
+}

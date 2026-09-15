@@ -1,0 +1,37 @@
+<div class="euro-page">
+  <h2>{{ titulo }}</h2>
+
+  <div class="filtros">
+    <mat-form-field appearance="outline">
+      <mat-label>Buscar por nome ou curso</mat-label>
+      <input matInput [(ngModel)]="busca" (ngModelChange)="buscar()" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="statusSelecionado" (ngModelChange)="buscar()">
+        @for (opcao of opcoesStatus; track opcao.valor) {
+          <mat-option [value]="opcao.valor">{{ opcao.rotulo }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <p class="filtros__contador">{{ educandos().length }} educando(s) encontrado(s)</p>
+
+  <div class="lista">
+    @for (educando of educandos(); track educando.id) {
+      <button type="button" class="lista__item" (click)="abrir(educando.id)">
+        <div class="lista__info">
+          <strong>{{ educando.nome }}</strong>
+          <span>{{ educando.curso }}</span>
+        </div>
+        <div class="lista__frequencia">
+          <mat-progress-bar mode="determinate" [value]="educando.frequencia" />
+          <span>{{ educando.frequencia }}%</span>
+        </div>
+        <app-status-chip [status]="educando.status" />
+      </button>
+    }
+  </div>
+</div>

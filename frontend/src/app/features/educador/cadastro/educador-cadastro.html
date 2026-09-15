@@ -1,0 +1,42 @@
+<div class="euro-page euro-page--estreita">
+  <h2>Cadastrar educando</h2>
+
+  <form [formGroup]="form" (ngSubmit)="cadastrar()" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome completo</mat-label>
+      <input matInput formControlName="nomeCompleto" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>CPF</mat-label>
+      <input matInput formControlName="cpf" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Telefone</mat-label>
+      <input matInput formControlName="telefone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput type="email" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Curso</mat-label>
+      <mat-select formControlName="cursoId">
+        @for (curso of cursos(); track curso.id) {
+          <mat-option [value]="curso.id">{{ curso.nome }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <p class="form__aviso">
+      O educando receberá um e-mail para definir a própria senha de acesso à plataforma.
+    </p>
+
+    <button mat-flat-button color="primary" type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
+  </form>
+</div>

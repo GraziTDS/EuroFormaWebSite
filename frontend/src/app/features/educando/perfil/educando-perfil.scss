@@ -1,0 +1,16 @@
+.campo {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--neutral-border);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  span {
+    color: var(--text-secondary);
+  }
+}

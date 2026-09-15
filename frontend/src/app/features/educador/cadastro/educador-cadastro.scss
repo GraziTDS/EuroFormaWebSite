@@ -1,0 +1,15 @@
+.euro-page--estreita {
+  max-width: 480px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form__aviso {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}

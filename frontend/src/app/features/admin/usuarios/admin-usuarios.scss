@@ -1,0 +1,27 @@
+.aviso {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: -12px;
+}
+
+.linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--neutral-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.linha__info {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+}

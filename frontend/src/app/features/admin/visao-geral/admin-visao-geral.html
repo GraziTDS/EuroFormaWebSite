@@ -1,0 +1,32 @@
+@if (dados(); as d) {
+  <div class="euro-page">
+    <h2>Visão geral institucional</h2>
+
+    <div class="stats">
+      <app-stat-card label="Total de educandos" [value]="d.totalEducandos" />
+      <app-stat-card label="Ativos" [value]="d.ativos" />
+      <app-stat-card label="Presença média" [value]="d.presencaMedia + '%'" />
+      <app-stat-card label="Taxa de conclusão" [value]="d.taxaConclusao + '%'" />
+      <app-stat-card label="Concluídos" [value]="d.concluidos" />
+      <app-stat-card label="Educadores ativos" [value]="d.educadoresAtivos + '/' + d.educadoresTotal" />
+    </div>
+
+    <app-section-card titulo="Distribuição por status">
+      @for (par of d.distribuicaoPorStatus | keyvalue; track par.key) {
+        <div class="linha">
+          <app-status-chip [status]="$any(par.key)" />
+          <span>{{ par.value }}</span>
+        </div>
+      }
+    </app-section-card>
+
+    <app-section-card titulo="Educandos por curso">
+      @for (par of d.educandosPorCurso | keyvalue; track par.key) {
+        <div class="linha">
+          <span>{{ par.key }}</span>
+          <strong>{{ par.value }}</strong>
+        </div>
+      }
+    </app-section-card>
+  </div>
+}

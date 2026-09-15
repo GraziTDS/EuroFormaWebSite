@@ -1,0 +1,81 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  // Paleta institucional euroForma (mesmas cores usadas nos apps Flutter/Kotlin),
+  // sobrepondo as variáveis de sistema do Material 3.
+  --mat-sys-primary: #1247a6;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-primary-container: #eaf1fc;
+  --mat-sys-on-primary-container: #0b3b8c;
+  --mat-sys-secondary: #ffc53d;
+
+  --euro-blue-dark: #0b3b8c;
+  --euro-blue: #1247a6;
+  --euro-blue-light: #3e6fd1;
+  --euro-blue-surface: #eaf1fc;
+  --euro-gold: #ffc53d;
+
+  --status-em-curso: #1247a6;
+  --status-concluido: #2aa6c9;
+  --status-inscrito: #c98a00;
+  --status-inscrito-bg: #fff3d6;
+  --status-desistente: #d64545;
+  --status-desistente-bg: #fbe3e1;
+
+  --success-green: #1e8e5a;
+  --success-green-bg: #e7f6ec;
+  --success-green-border: #b7e4c7;
+
+  --neutral-bg: #f4f7fc;
+  --neutral-border: #dce4f0;
+  --text-secondary: #5b6b85;
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--neutral-bg);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.euro-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
