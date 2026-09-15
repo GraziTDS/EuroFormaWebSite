@@ -99,13 +99,3 @@ EuroFormaWebSite/
 
 - Backend: `cd backend && ./mvnw test`
 - Frontend: `cd frontend && npm test`
-
-## Nota sobre o ambiente desta sessão
-
-O Docker Desktop desta máquina não conseguiu inicializar o motor Linux durante o desenvolvimento
-(não há WSL instalado e o backend Hyper-V retornou erro 500 mesmo após reiniciar o Docker Desktop),
-então a verificação de ponta a ponta com Postgres real (migrations + login + telas) ainda não pôde
-ser executada neste ambiente. O schema/migrations e o código foram escritos e revisados com cuidado,
-mas vale rodar `docker compose up -d` e subir o backend assim que o Docker estiver saudável para
-confirmar que tudo sobe sem erros de migração/mapeamento antes de considerar o MVP validado de ponta
-a ponta.
