@@ -116,6 +116,8 @@ EuroFormaWebSite/
 ├── backend/            # API Java (Spring Boot)
 │   └── src/main/resources/db/migration/   # Migrations Flyway (schema + seed)
 ├── frontend/           # SPA Angular
+├── Dockerfile          # Build único: compila o Angular e embute no jar do Spring Boot
+├── render.yaml         # Blueprint de deploy no Render (1 web service + 1 Postgres)
 └── docker-compose.yml  # Postgres + Mailhog para desenvolvimento
 ```
 
@@ -123,3 +125,35 @@ EuroFormaWebSite/
 
 - Backend: `cd backend && ./mvnw test`
 - Frontend: `cd frontend && npm test`
+
+## Deploy público (Render) — para gerar um link/QR code de teste
+
+Em produção, o backend Java **serve o próprio frontend Angular já compilado** (um único serviço, um
+único domínio) — não precisa hospedar frontend e backend separados nem lidar com CORS entre eles.
+
+1. Confirme que o repositório está atualizado no GitHub (branch `main`).
+2. Crie uma conta em [render.com](https://render.com) (dá pra entrar direto com o GitHub).
+3. No dashboard, clique em **New +** → **Blueprint**, selecione o repositório
+   `GraziTDS/EuroFormaWebSite`. O Render vai ler o `render.yaml` da raiz e propor automaticamente:
+   - um banco **Postgres** gratuito (`euroforma-db`);
+   - um **Web Service** gratuito rodando o `Dockerfile` (`euroforma-projeto-educandos`).
+4. Revise os nomes (o nome do serviço vira parte da URL pública, ex.:
+   `https://euroforma-projeto-educandos.onrender.com` — se esse nome já estiver em uso por outra
+   pessoa no Render, você pode alterá-lo na tela de revisão antes de aplicar) e clique em **Apply**.
+5. Aguarde o primeiro deploy (compila o Angular + o Spring Boot dentro do Docker — leva alguns
+   minutos na primeira vez). As migrations do Flyway rodam sozinhas na primeira subida, já com os
+   usuários de teste da tabela acima.
+6. Pronto — a URL pública do serviço é o link para o QR code. Teste logando com qualquer usuário da
+   tabela de seed (senha `euroforma123`).
+
+**Limitações do plano gratuito do Render (bom para demo/teste, não para produção real):**
+- O serviço "dorme" depois de um tempo sem uso — a primeira requisição depois disso demora uns
+  30-60s para "acordar" (as seguintes ficam rápidas normalmente).
+- Upload de currículo fica em disco *dentro do container* — some a cada novo deploy/restart.
+- Envio de e-mail (recuperação de senha, convite de novo educando) não funciona out-of-the-box,
+  pois não há servidor SMTP configurado — configure `MAIL_HOST`/`MAIL_PORT`/`MAIL_USERNAME`/
+  `MAIL_PASSWORD`/`MAIL_SMTP_AUTH=true`/`MAIL_SMTP_STARTTLS=true` nas variáveis de ambiente do
+  serviço no dashboard do Render (ex.: usando uma conta Gmail com senha de app, ou um serviço como
+  Brevo/Resend) se quiser esse fluxo funcionando de verdade no link público.
+- Se quiser o assistente de IA do currículo ativo no link público, adicione a variável de ambiente
+  `ANTHROPIC_API_KEY` no dashboard do serviço no Render (veja a seção acima).

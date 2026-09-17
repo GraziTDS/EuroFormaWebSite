@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.angular
+backend/target
+backend/uploads
+frontend/dist
+.git
+.idea
+.vscode
+*.log

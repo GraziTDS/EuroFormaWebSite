@@ -1,0 +1,45 @@
+databases:
+  - name: euroforma-db
+    databaseName: euroforma
+    user: euroforma
+    plan: free
+
+services:
+  - type: web
+    name: euroforma-projeto-educandos
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: euroforma-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: euroforma-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: euroforma-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: euroforma-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: euroforma-db
+          property: password
+      - key: DB_SSLMODE
+        value: require
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STORAGE_DIR
+        value: /app/uploads
+      - key: MAIL_REMETENTE
+        value: no-reply@euroforma.local
+      - key: FRONTEND_RESET_SENHA_URL
+        value: https://euroforma-projeto-educandos.onrender.com/redefinir-senha

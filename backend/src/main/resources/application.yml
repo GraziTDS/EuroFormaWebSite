@@ -2,7 +2,7 @@ spring:
   application:
     name: euroforma
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:euroforma}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:euroforma}?sslmode=${DB_SSLMODE:disable}
     username: ${DB_USER:euroforma}
     password: ${DB_PASSWORD:euroforma}
   jpa:
@@ -32,7 +32,7 @@ spring:
       max-request-size: 5MB
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 euroforma:
   jwt:
