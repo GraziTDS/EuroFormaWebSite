@@ -1,10 +1,6 @@
 # euroForma Web
 
-Versão **Web** do Projeto Educandos do Instituto Eurofarma — mesma proposta das versões mobile
-([FlutterEuroForma](https://github.com/GraziTDS/FlutterEuroForma) e
-[KotlinEuroForma](https://github.com/GraziTDS/KotlinEuroForma)), agora com backend, banco de dados e
-autenticação reais (as versões mobile eram MVPs navegáveis com dados mockados, sem persistência).
-
+Versão **Web** do Projeto Educandos do Instituto Eurofarma. 
 ## Stack
 
 - **Backend**: Java 21 + Spring Boot 4 (Web, Security, Data JPA, Validation, Mail, Flyway) + Maven
@@ -127,4 +123,3 @@ EuroFormaWebSite/
 
 - Backend: `cd backend && ./mvnw test`
 - Frontend: `cd frontend && npm test`
-
