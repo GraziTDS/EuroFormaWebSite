@@ -89,25 +89,8 @@ Para testar a recuperação de senha ou o convite de senha de um educando recém
 
 ## Assistente de currículo (IA)
 
-O educando tem, na tela de perfil, um chat com IA para receber sugestões de como melhorar o currículo.
-Esse recurso usa a API da Anthropic e só fica ativo se a variável de ambiente `ANTHROPIC_API_KEY` for
-configurada ao subir o backend (sem a chave, o chat mostra uma mensagem informando que o recurso não
-está configurado, em vez de quebrar). Variáveis opcionais:
+O educando tem, na tela de perfil, um chat com IA para receber sugestões de como melhorar o currículo. Ainda não está em funcionando, mas é visto como uma implementação futuramente. 
 
-```bash
-ANTHROPIC_API_KEY=sk-ant-...      # obrigatória para habilitar o assistente
-ANTHROPIC_MODEL=claude-haiku-4-5  # opcional, esse é o padrão (modelo mais barato da Anthropic)
-```
-
-**Como conseguir a chave e quanto custa:**
-
-1. Crie uma conta em [console.anthropic.com](https://console.anthropic.com), cadastre um cartão e gere uma
-   API key (começa com `sk-ant-...`).
-2. É uma API paga por uso (não tem plano fixo mensal) — mas o modelo padrão usado aqui, o **Claude Haiku 4.5**,
-   é o mais barato da Anthropic: **US$ 1 por milhão de tokens de entrada e US$ 5 por milhão de tokens de
-   saída**. Uma troca de mensagens típica no chat do currículo custa uma fração de centavo.
-3. Sem a chave configurada, o recurso simplesmente aparece desabilitado no app (com um aviso), sem quebrar
-   nada.
 
 ## Estrutura do repositório
 
