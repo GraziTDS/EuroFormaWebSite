@@ -13,6 +13,7 @@ FROM eclipse-temurin:21-jdk-alpine AS backend-build
 WORKDIR /app/backend
 COPY backend/.mvn/ .mvn/
 COPY backend/mvnw backend/pom.xml ./
+RUN chmod +x mvnw
 COPY backend/src/ src/
 COPY --from=frontend-build /app/frontend/dist/euroforma-frontend/browser/ src/main/resources/static/
 RUN ./mvnw -q -DskipTests package
