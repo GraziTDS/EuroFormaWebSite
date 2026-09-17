@@ -40,15 +40,25 @@ public class EducandoService {
 
     public List<EducandoResumoDto> listar(String busca, StatusEducando status) {
         String buscaNormalizada = (busca == null || busca.isBlank()) ? null : busca.trim().toLowerCase();
-        return educandoRepository.buscar(status, buscaNormalizada).stream()
+
+        List<Educando> base = status != null
+                ? educandoRepository.findByStatusOrderByUsuarioNome(status)
+                : educandoRepository.findAllByOrderByUsuarioNome();
+
+        return base.stream()
+                .filter(e -> buscaNormalizada == null
+                        || e.getUsuario().getNome().toLowerCase().contains(buscaNormalizada)
+                        || e.getCurso().getNome().toLowerCase().contains(buscaNormalizada))
                 .map(EducandoResumoDto::de)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public EducandoPerfilDto obterPerfil(Long id) {
         return EducandoPerfilDto.de(buscarOuFalhar(id));
     }
 
+    @Transactional(readOnly = true)
     public EducandoPerfilDto obterPerfilPorUsuario(Long usuarioId) {
         Educando educando = educandoRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> ApiException.naoEncontrado("Educando não encontrado para o usuário logado"));

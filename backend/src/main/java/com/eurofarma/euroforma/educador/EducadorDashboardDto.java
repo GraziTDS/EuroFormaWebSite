@@ -1,5 +1,6 @@
 package com.eurofarma.euroforma.educador;
 
+import com.eurofarma.euroforma.common.PontoEvolucaoDto;
 import com.eurofarma.euroforma.educando.StatusEducando;
 import com.eurofarma.euroforma.educando.dto.EducandoResumoDto;
 
@@ -12,6 +13,7 @@ public record EducadorDashboardDto(
         long concluintes,
         int taxaConclusao,
         Map<StatusEducando, Long> distribuicaoPorStatus,
-        List<EducandoResumoDto> recentes
+        List<EducandoResumoDto> recentes,
+        List<PontoEvolucaoDto> evolucaoMensal
 ) {
 }

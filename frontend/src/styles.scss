@@ -13,18 +13,43 @@ html {
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
-      typography: Roboto,
+      typography: Inter,
       density: 0,
     )
   );
 
-  // Paleta institucional euroForma (mesmas cores usadas nos apps Flutter/Kotlin),
-  // sobrepondo as variáveis de sistema do Material 3.
+  // ===== Paleta institucional euroForma (mesmas cores dos apps Flutter/Kotlin) =====
   --mat-sys-primary: #1247a6;
   --mat-sys-on-primary: #ffffff;
   --mat-sys-primary-container: #eaf1fc;
   --mat-sys-on-primary-container: #0b3b8c;
   --mat-sys-secondary: #ffc53d;
+
+  // Texto e superfícies: troca a paleta neutra "cinza-arroxeado" padrão do Material
+  // pela paleta azul-acinzentada usada no protótipo/app mobile.
+  --mat-sys-on-surface: #16213e;
+  --mat-sys-on-surface-variant: #5b6b85;
+  --mat-sys-surface: #ffffff;
+  --mat-sys-background: #f4f7fc;
+  --mat-sys-surface-container-lowest: #ffffff;
+  --mat-sys-surface-container-low: #ffffff;
+  --mat-sys-surface-container: #f4f7fc;
+  --mat-sys-surface-container-high: #eaf1fc;
+  --mat-sys-surface-container-highest: #dce4f0;
+  --mat-sys-surface-variant: #eaf1fc;
+
+  // Bordas: o cinza padrão do Material (outline/outline-variant) é bem mais escuro que
+  // o traço fino e claro do protótipo — troca pelas mesmas cores usadas nos cards/inputs.
+  --mat-sys-outline: #b7c3d6;
+  --mat-sys-outline-variant: #dce4f0;
+
+  // Cantos: por padrão o Material 3 usa botões em formato "pílula" (corner-full) e cards
+  // bem arredondados — o protótipo usa cantos discretos (~8-12px) em tudo.
+  --mat-sys-corner-full: 8px;
+  --mat-sys-corner-extra-small: 8px;
+  --mat-sys-corner-small: 8px;
+  --mat-sys-corner-medium: 12px;
+  --mat-sys-corner-large: 12px;
 
   --euro-blue-dark: #0b3b8c;
   --euro-blue: #1247a6;
@@ -70,6 +95,18 @@ body {
   box-sizing: border-box;
 }
 
+// Botões: remove a sombra padrão do Material e deixa o peso/traço mais próximo do protótipo.
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button {
+  letter-spacing: normal !important;
+  font-weight: 600 !important;
+}
+
+.mat-mdc-unelevated-button:not(:disabled) {
+  box-shadow: none !important;
+}
+
 .euro-page {
   max-width: 1100px;
   margin: 0 auto;
@@ -78,4 +115,3 @@ body {
   flex-direction: column;
   gap: 20px;
 }
-

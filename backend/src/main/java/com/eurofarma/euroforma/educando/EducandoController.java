@@ -21,6 +21,7 @@ import java.util.List;
 public class EducandoController {
 
     private final EducandoService educandoService;
+    private final EducandoExcelService educandoExcelService;
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('EDUCANDO')")
@@ -58,8 +59,11 @@ public class EducandoController {
         return educandoService.cadastrar(request);
     }
 
+    // A partir da Sprint 4: gerir o status/frequência de um educando (e ver seu histórico de
+    // auditoria) é uma atribuição exclusiva do Administrador — o Educador/Coordenador apenas
+    // acompanha a ficha do aluno em modo leitura (GET /{id} acima).
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> atualizarStatus(
             @PathVariable Long id,
             @Valid @RequestBody AtualizarStatusRequest request,
@@ -69,7 +73,7 @@ public class EducandoController {
     }
 
     @PatchMapping("/{id}/frequencia")
-    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<Void> atualizarFrequencia(
             @PathVariable Long id,
             @Valid @RequestBody AtualizarFrequenciaRequest request,
@@ -79,9 +83,26 @@ public class EducandoController {
     }
 
     @GetMapping("/{id}/auditoria")
-    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public List<AuditoriaDto> auditoria(@PathVariable Long id) {
         return educandoService.auditoria(id);
+    }
+
+    @GetMapping("/exportar-excel")
+    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    public ResponseEntity<byte[]> exportarExcel() {
+        byte[] planilha = educandoExcelService.exportar();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"educandos.xlsx\"")
+                .contentType(org.springframework.http.MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(planilha);
+    }
+
+    @PostMapping(value = "/importar-excel", consumes = "multipart/form-data")
+    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    public EducandoExcelService.ResultadoImportacao importarExcel(@RequestParam("arquivo") MultipartFile arquivo) {
+        return educandoExcelService.importar(arquivo);
     }
 
     @GetMapping("/{id}/curriculo")

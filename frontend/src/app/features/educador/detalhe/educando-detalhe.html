@@ -4,42 +4,54 @@
       <app-status-chip [status]="p.status" />
     </app-section-card>
 
-    <app-section-card titulo="Gestão do aluno">
-      <mat-form-field appearance="outline">
-        <mat-label>Status</mat-label>
-        <mat-select [(ngModel)]="statusSelecionado">
-          @for (opcao of opcoesStatus; track opcao.valor) {
-            <mat-option [value]="opcao.valor">{{ opcao.rotulo }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      @if (statusSelecionado() === 'DESISTENTE') {
+    @if (podeAdministrar()) {
+      <app-section-card titulo="Gestão do aluno">
         <mat-form-field appearance="outline">
-          <mat-label>Motivo da desistência</mat-label>
-          <textarea matInput rows="2" [(ngModel)]="motivoDesistencia"></textarea>
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="statusSelecionado">
+            @for (opcao of opcoesStatus; track opcao.valor) {
+              <mat-option [value]="opcao.valor">{{ opcao.rotulo }}</mat-option>
+            }
+          </mat-select>
         </mat-form-field>
+
+        @if (statusSelecionado() === 'DESISTENTE') {
+          <mat-form-field appearance="outline">
+            <mat-label>Motivo da desistência</mat-label>
+            <textarea matInput rows="2" [(ngModel)]="motivoDesistencia"></textarea>
+          </mat-form-field>
+        }
+
+        <label class="campo-slider">
+          <span>Frequência: {{ frequenciaSelecionada() }}%</span>
+          <mat-slider min="0" max="100" step="1" discrete>
+            <input matSliderThumb [(ngModel)]="frequenciaSelecionada" />
+          </mat-slider>
+        </label>
+
+        <button mat-flat-button color="primary" [disabled]="salvando()" (click)="salvar()">
+          {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
+        </button>
+      </app-section-card>
+
+      @if (auditoria().length > 0) {
+        <app-section-card titulo="Histórico de alterações" subtitulo="Auditoria de status e frequência">
+          @for (item of auditoria(); track item.criadoEm + item.campo) {
+            <div class="auditoria-item">
+              <span>{{ item.criadoEm | date: 'dd/MM/yyyy HH:mm' }} — {{ item.autorNome }}</span>
+              <strong>{{ item.campo }}: {{ item.valorAnterior }} → {{ item.valorNovo }}</strong>
+            </div>
+          }
+        </app-section-card>
       }
-
-      <label class="campo-slider">
-        <span>Frequência: {{ frequenciaSelecionada() }}%</span>
-        <mat-slider min="0" max="100" step="1" discrete>
-          <input matSliderThumb [(ngModel)]="frequenciaSelecionada" />
-        </mat-slider>
-      </label>
-
-      <button mat-flat-button color="primary" [disabled]="salvando()" (click)="salvar()">
-        {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
-      </button>
-    </app-section-card>
-
-    @if (auditoria().length > 0) {
-      <app-section-card titulo="Histórico de alterações" subtitulo="Auditoria de status e frequência">
-        @for (item of auditoria(); track item.criadoEm + item.campo) {
-          <div class="auditoria-item">
-            <span>{{ item.criadoEm | date: 'dd/MM/yyyy HH:mm' }} — {{ item.autorNome }}</span>
-            <strong>{{ item.campo }}: {{ item.valorAnterior }} → {{ item.valorNovo }}</strong>
-          </div>
+    } @else {
+      <app-section-card
+        titulo="Acompanhamento do aluno"
+        subtitulo="Alteração de status e frequência é uma atribuição do Administrador"
+      >
+        <div class="campo"><span>Frequência</span><strong>{{ p.frequencia }}%</strong></div>
+        @if (p.status === 'DESISTENTE' && p.motivoDesistencia) {
+          <div class="campo"><span>Motivo da desistência</span><strong>{{ p.motivoDesistencia }}</strong></div>
         }
       </app-section-card>
     }

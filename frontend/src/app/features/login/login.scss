@@ -6,70 +6,179 @@
 .login {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: 1.15fr 1fr;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
   }
 }
 
+// ===================== Painel esquerdo (hero institucional) =====================
+
 .login__hero {
-  background: linear-gradient(160deg, var(--euro-blue-dark), var(--euro-blue));
+  background: linear-gradient(155deg, var(--euro-blue-dark) 0%, var(--euro-blue) 65%, #1a5fc4 100%);
   color: white;
-  padding: 56px;
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.login__topo {
+  display: flex;
+}
+
+.login__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 19px;
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.login__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+
+  strong {
+    font-size: 17px;
+    font-weight: 700;
+
+    em {
+      color: var(--euro-gold);
+      font-style: normal;
+    }
+  }
+
+  small {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    opacity: 0.85;
+  }
+}
+
+.login__meio {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 16px;
+  max-width: 520px;
+  padding: 48px 0;
 }
 
-.login__brand {
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.login__institute {
-  letter-spacing: 2px;
+.login__badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 5px 14px;
   font-size: 12px;
-  opacity: 0.85;
 }
 
-.login__hero h1 {
-  font-size: 28px;
-  margin: 8px 0;
+.login__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--euro-gold);
+  display: inline-block;
 }
 
-.login__hero p {
-  max-width: 480px;
+.login__meio h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 4px 0;
+
+  em {
+    color: var(--euro-gold);
+    font-style: normal;
+  }
+}
+
+.login__meio p {
+  margin: 0;
   line-height: 1.6;
-  opacity: 0.95;
+  opacity: 0.92;
+  font-size: 14px;
+
+  strong {
+    font-weight: 600;
+  }
 }
 
-.login__chips {
+.login__stats {
   display: flex;
   gap: 12px;
   margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.login__stat {
+  flex: 1 1 140px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  mat-icon {
+    color: var(--euro-gold);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 4px;
+  }
+
+  strong {
+    font-size: 14px;
+  }
 
   span {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 999px;
-    padding: 6px 14px;
-    font-size: 13px;
+    font-size: 11px;
+    opacity: 0.85;
   }
 }
+
+.login__rodape {
+  margin: 0;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+// ===================== Painel direito (formulário) =====================
 
 .login__form-panel {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px;
-  background: var(--neutral-bg);
+  background: white;
 }
 
 .login__form {
   width: 100%;
-  max-width: 380px;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -77,32 +186,77 @@
   h2 {
     margin: 0 0 4px;
     color: var(--euro-blue-dark);
+    font-size: 22px;
+  }
+
+  mat-form-field {
+    width: 100%;
   }
 }
 
 .login__form-subtitle {
   color: var(--text-secondary);
   font-size: 13px;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
+}
+
+.login__campo-senha-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  color: var(--mat-sys-on-surface);
+  margin-bottom: 2px;
+
+  a {
+    color: var(--euro-blue);
+    text-decoration: none;
+    font-size: 12px;
+  }
+}
+
+.login__campo-senha {
+  ::ng-deep .mdc-floating-label {
+    display: none;
+  }
 }
 
 .login__erro {
   color: var(--status-desistente);
   font-size: 13px;
-  margin: 0 0 8px;
+  margin: 4px 0 0;
 }
 
 .login__esqueci {
-  margin-top: 12px;
+  margin-top: 16px;
   font-size: 13px;
   color: var(--euro-blue);
   text-align: center;
   text-decoration: none;
 }
 
+.login__form > button[mat-flat-button] {
+  margin-top: 12px;
+  height: 44px;
+}
+
 .login__aviso {
-  margin-top: 24px;
+  margin-top: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--neutral-bg);
+  border: 1px solid var(--neutral-border);
+  border-radius: 10px;
+  padding: 10px 12px;
   font-size: 12px;
   color: var(--text-secondary);
-  text-align: center;
+
+  mat-icon {
+    color: var(--euro-blue);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
 }

@@ -1,14 +1,37 @@
+.relatorios__topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    color: var(--euro-blue-dark);
+  }
+}
+
 .stats {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
 
-.linha {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  font-size: 14px;
+.relatorios__graficos {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grafico-wrapper {
+  position: relative;
+  height: 260px;
+
+  &--alto {
+    height: 320px;
+  }
 }
 
 .motivo {

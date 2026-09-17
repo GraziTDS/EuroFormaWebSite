@@ -3,30 +3,55 @@
     <h2>Visão geral institucional</h2>
 
     <div class="stats">
-      <app-stat-card label="Total de educandos" [value]="d.totalEducandos" />
-      <app-stat-card label="Ativos" [value]="d.ativos" />
-      <app-stat-card label="Presença média" [value]="d.presencaMedia + '%'" />
-      <app-stat-card label="Taxa de conclusão" [value]="d.taxaConclusao + '%'" />
-      <app-stat-card label="Concluídos" [value]="d.concluidos" />
-      <app-stat-card label="Educadores ativos" [value]="d.educadoresAtivos + '/' + d.educadoresTotal" />
+      <app-stat-card icon="groups" label="Total de educandos" [value]="d.totalEducandos" />
+      <app-stat-card icon="person" label="Ativos" [value]="d.ativos" />
+      <app-stat-card icon="event_available" label="Presença média" [value]="d.presencaMedia + '%'" />
+      <app-stat-card icon="trending_up" label="Taxa de conclusão" [value]="d.taxaConclusao + '%'" />
+      <app-stat-card icon="school" label="Concluídos" [value]="d.concluidos" />
+      <app-stat-card icon="badge" label="Educadores ativos" [value]="d.educadoresAtivos + '/' + d.educadoresTotal" />
     </div>
 
-    <app-section-card titulo="Distribuição por status">
-      @for (par of d.distribuicaoPorStatus | keyvalue; track par.key) {
-        <div class="linha">
-          <app-status-chip [status]="$any(par.key)" />
-          <span>{{ par.value }}</span>
+    <div class="graficos">
+      <app-section-card titulo="Crescimento da base" class="graficos__evolucao">
+        <div class="grafico-wrapper">
+          <canvas baseChart [data]="evolucaoData()" [options]="evolucaoOptions" type="line"></canvas>
         </div>
-      }
-    </app-section-card>
+      </app-section-card>
 
-    <app-section-card titulo="Educandos por curso">
-      @for (par of d.educandosPorCurso | keyvalue; track par.key) {
-        <div class="linha">
-          <span>{{ par.key }}</span>
-          <strong>{{ par.value }}</strong>
+      <app-section-card titulo="Educandos por curso">
+        <div class="grafico-wrapper">
+          <canvas baseChart [data]="barData()" [options]="barOptions" type="bar"></canvas>
         </div>
-      }
-    </app-section-card>
+      </app-section-card>
+    </div>
+
+    <div class="graficos">
+      <app-section-card titulo="Distribuição por status">
+        @for (par of d.distribuicaoPorStatus | keyvalue; track par.key) {
+          <div class="distribuicao-item">
+            <app-status-chip [status]="$any(par.key)" />
+            <div class="distribuicao-item__barra">
+              <div class="distribuicao-item__preenchido" [style.width.%]="((par.value ?? 0) / maiorDistribuicao()) * 100"></div>
+            </div>
+            <span>{{ par.value }}</span>
+          </div>
+        }
+      </app-section-card>
+
+      <app-section-card titulo="Educadores ativos">
+        @for (educador of educadores().slice(0, 5); track educador.id) {
+          <div class="educador-item">
+            <div>
+              <strong>{{ educador.nome }}</strong>
+              <span>{{ educador.email }}</span>
+            </div>
+            <span class="educador-item__status" [class.inativo]="!educador.ativo">
+              {{ educador.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+        }
+        <a routerLink="/admin/usuarios">Ver todos →</a>
+      </app-section-card>
+    </div>
   </div>
 }

@@ -46,3 +46,6 @@ euroforma:
     remetente: ${MAIL_REMETENTE:no-reply@euroforma.local}
   frontend:
     reset-senha-url: ${FRONTEND_RESET_SENHA_URL:http://localhost:4200/redefinir-senha}
+  ia:
+    api-key: ${ANTHROPIC_API_KEY:}
+    model: ${ANTHROPIC_MODEL:claude-haiku-4-5}

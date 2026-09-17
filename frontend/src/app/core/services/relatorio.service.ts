@@ -10,4 +10,8 @@ export class RelatorioService {
   gerar(tipo: TipoRelatorio): Observable<RelatorioResponse> {
     return this.http.get<RelatorioResponse>('/api/relatorios', { params: { tipo } });
   }
+
+  exportarExcel(tipo: TipoRelatorio): Observable<Blob> {
+    return this.http.get('/api/relatorios/exportar-excel', { params: { tipo }, responseType: 'blob' });
+  }
 }

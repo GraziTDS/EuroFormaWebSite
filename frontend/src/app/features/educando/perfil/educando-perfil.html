@@ -33,6 +33,9 @@
       @if (p.testeIngles) {
         <div class="campo"><span>Teste de inglês</span><strong>{{ p.testeIngles.nivel }} — {{ p.testeIngles.pontuacao }} pontos</strong></div>
       }
+      <a mat-stroked-button [href]="urlTesteIngles" target="_blank" rel="noopener noreferrer">
+        {{ p.testeIngles ? 'Refazer teste de inglês' : 'Fazer teste de inglês' }}
+      </a>
     </app-section-card>
 
     @if (p.cursosAnteriores.length > 0) {

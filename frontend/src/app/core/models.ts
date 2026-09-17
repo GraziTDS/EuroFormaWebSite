@@ -119,6 +119,11 @@ export interface Educador {
   ativo: boolean;
 }
 
+export interface PontoEvolucao {
+  mes: string;
+  total: number;
+}
+
 export interface EducadorDashboard {
   totalAlunos: number;
   ativos: number;
@@ -126,6 +131,7 @@ export interface EducadorDashboard {
   taxaConclusao: number;
   distribuicaoPorStatus: Partial<Record<StatusEducando, number>>;
   recentes: EducandoResumo[];
+  evolucaoMensal: PontoEvolucao[];
 }
 
 export interface AdminVisaoGeral {
@@ -138,6 +144,7 @@ export interface AdminVisaoGeral {
   educadoresTotal: number;
   distribuicaoPorStatus: Partial<Record<StatusEducando, number>>;
   educandosPorCurso: Record<string, number>;
+  evolucaoMensal: PontoEvolucao[];
 }
 
 export interface Evento {
@@ -150,6 +157,28 @@ export interface Evento {
   vagasTotal: number;
   vagasOcupadas: number;
   inscrito: boolean;
+}
+
+export interface Turma {
+  id: number;
+  nome: string;
+  curso: string;
+  educadorNome: string;
+  totalEducandos: number;
+}
+
+export interface Aula {
+  id: number;
+  data: string;
+  tema: string | null;
+  totalPresentes: number;
+  totalEducandos: number;
+}
+
+export interface PresencaItem {
+  educandoId: number;
+  nome: string;
+  presente: boolean;
 }
 
 export interface RelatorioResponse {

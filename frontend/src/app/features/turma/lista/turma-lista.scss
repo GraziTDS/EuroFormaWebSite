@@ -1,0 +1,30 @@
+.euro-page__subtitulo {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: -12px;
+}
+
+.turmas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.turma-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.turma-card__acao {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--euro-blue);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+}

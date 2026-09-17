@@ -17,9 +17,11 @@ autenticação reais (as versões mobile eram MVPs navegáveis com dados mockado
 
 Três perfis de acesso — **Educando**, **Educador/Coordenador** e **Administrador** — cobrindo:
 login real com recuperação de senha por e-mail, painel e boletim do educando, inscrição em eventos,
-cadastro e gestão de educandos (status/frequência com auditoria), upload real de currículo (PDF),
-gestão de usuários (educadores) e relatórios institucionais (matrículas por curso, frequência,
-conclusão & evasão, motivos de desistência).
+assistente de IA para ajudar o educando a melhorar o currículo, cadastro e gestão de educandos
+(status/frequência com auditoria — exclusivo do Administrador), importação/exportação em Excel de
+educandos e relatórios, upload real de currículo (PDF), gestão de usuários (educadores), chamada de
+presença por turma (exclusiva do Educador/Coordenador) e relatórios institucionais com gráficos
+(matrículas por curso, frequência, conclusão & evasão, motivos de desistência).
 
 ## Como rodar localmente
 
@@ -89,6 +91,28 @@ Senha de **todos** os usuários abaixo: `euroforma123`
 Para testar a recuperação de senha ou o convite de senha de um educando recém-cadastrado, abra
 [http://localhost:8025](http://localhost:8025) (Mailhog) — o e-mail com o link cai lá.
 
+## Assistente de currículo (IA)
+
+O educando tem, na tela de perfil, um chat com IA para receber sugestões de como melhorar o currículo.
+Esse recurso usa a API da Anthropic e só fica ativo se a variável de ambiente `ANTHROPIC_API_KEY` for
+configurada ao subir o backend (sem a chave, o chat mostra uma mensagem informando que o recurso não
+está configurado, em vez de quebrar). Variáveis opcionais:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-...      # obrigatória para habilitar o assistente
+ANTHROPIC_MODEL=claude-haiku-4-5  # opcional, esse é o padrão (modelo mais barato da Anthropic)
+```
+
+**Como conseguir a chave e quanto custa:**
+
+1. Crie uma conta em [console.anthropic.com](https://console.anthropic.com), cadastre um cartão e gere uma
+   API key (começa com `sk-ant-...`).
+2. É uma API paga por uso (não tem plano fixo mensal) — mas o modelo padrão usado aqui, o **Claude Haiku 4.5**,
+   é o mais barato da Anthropic: **US$ 1 por milhão de tokens de entrada e US$ 5 por milhão de tokens de
+   saída**. Uma troca de mensagens típica no chat do currículo custa uma fração de centavo.
+3. Sem a chave configurada, o recurso simplesmente aparece desabilitado no app (com um aviso), sem quebrar
+   nada.
+
 ## Estrutura do repositório
 
 ```
@@ -104,12 +128,3 @@ EuroFormaWebSite/
 - Backend: `cd backend && ./mvnw test`
 - Frontend: `cd frontend && npm test`
 
-## Nota sobre o ambiente desta sessão
-
-O Docker Desktop desta máquina não conseguiu inicializar o motor Linux durante o desenvolvimento
-(não há WSL instalado e o backend Hyper-V retornou erro 500 mesmo após reiniciar o Docker Desktop),
-então a verificação de ponta a ponta com Postgres real (migrations + login + telas) ainda não pôde
-ser executada neste ambiente. O schema/migrations e o código foram escritos e revisados com cuidado,
-mas vale rodar `docker compose up -d` e subir o backend assim que o Docker estiver saudável para
-confirmar que tudo sobe sem erros de migração/mapeamento antes de considerar o MVP validado de ponta
-a ponta.

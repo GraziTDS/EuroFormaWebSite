@@ -1,0 +1,20 @@
+<div class="euro-page">
+  <h2>Turmas</h2>
+  <p class="euro-page__subtitulo">Calendário de aulas e chamada de presença por turma.</p>
+
+  <div class="turmas-grid">
+    @for (turma of turmas(); track turma.id) {
+      <app-section-card [titulo]="turma.nome" [subtitulo]="turma.curso">
+        <div class="turma-card__info">
+          <span>Responsável: {{ turma.educadorNome }}</span>
+          <span>{{ turma.totalEducandos }} educando(s) matriculado(s)</span>
+        </div>
+        <button type="button" class="turma-card__acao" (click)="abrir(turma)">Ver chamada →</button>
+      </app-section-card>
+    }
+
+    @if (turmas().length === 0) {
+      <p>Nenhuma turma encontrada.</p>
+    }
+  </div>
+</div>

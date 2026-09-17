@@ -1,5 +1,10 @@
 <div class="euro-page">
-  <h2>Relatórios</h2>
+  <div class="relatorios__topo">
+    <h2>Relatórios</h2>
+    <button mat-stroked-button (click)="exportarExcel()">
+      <span>Exportar Excel</span>
+    </button>
+  </div>
 
   <mat-button-toggle-group [value]="tipoSelecionado()" (change)="selecionar($event.value)">
     @for (tipo of tipos; track tipo.valor) {
@@ -17,28 +22,35 @@
 
     @switch (r.tipo) {
       @case ('MATRICULAS_POR_CURSO') {
-        <app-section-card titulo="Matrículas por curso">
-          @for (item of r.matriculasPorCurso; track item.chave) {
-            <div class="linha"><span>{{ item.chave }}</span><strong>{{ item.total }}</strong></div>
-          }
-        </app-section-card>
+        <div class="relatorios__graficos">
+          <app-section-card titulo="Matrículas por curso" subtitulo="Distribuição atual da base por curso ofertado.">
+            <div class="grafico-wrapper">
+              <canvas baseChart [data]="barMatriculasData()" [options]="barSimplesOptions" type="bar"></canvas>
+            </div>
+          </app-section-card>
+          <app-section-card titulo="Proporção por curso">
+            <div class="grafico-wrapper">
+              <canvas baseChart [data]="pieMatriculasData()" [options]="pieOptions" type="pie"></canvas>
+            </div>
+          </app-section-card>
+        </div>
       }
       @case ('FREQUENCIA_POR_EDUCANDO') {
-        <app-section-card titulo="Frequência por educando" subtitulo="Ranking de presença individual">
-          @for (item of r.frequenciaPorEducando; track item.nome) {
-            <div class="linha"><span>{{ item.nome }}</span><strong>{{ item.frequencia }}%</strong></div>
-          }
+        <app-section-card titulo="Frequência por educando" subtitulo="Ranking de presença individual e desvio da meta.">
+          <div class="grafico-wrapper grafico-wrapper--alto">
+            <canvas baseChart [data]="barFrequenciaData()" [options]="barFrequenciaOptions" type="bar"></canvas>
+          </div>
         </app-section-card>
       }
       @case ('CONCLUSAO_EVASAO') {
-        <app-section-card titulo="Conclusão & evasão">
-          <div class="linha"><span>Ativos</span><strong>{{ r.ativos }}</strong></div>
-          <div class="linha"><span>Concluídos</span><strong>{{ r.concluidos }}</strong></div>
-          <div class="linha"><span>Desistentes</span><strong>{{ r.desistentes }}</strong></div>
+        <app-section-card titulo="Conclusão & evasão" subtitulo="Comparativo de ativos, concluídos e desistentes.">
+          <div class="grafico-wrapper">
+            <canvas baseChart [data]="barEvasaoData()" [options]="barSimplesOptions" type="bar"></canvas>
+          </div>
         </app-section-card>
       }
       @case ('MOTIVOS_DESISTENCIA') {
-        <app-section-card titulo="Motivos de desistência">
+        <app-section-card titulo="Motivos de desistência" subtitulo="Observações e categorias mais frequentes de evasão.">
           @if (r.motivosDesistencia && r.motivosDesistencia.length > 0) {
             @for (item of r.motivosDesistencia; track item.nome) {
               <div class="motivo">

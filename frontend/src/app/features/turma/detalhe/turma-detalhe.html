@@ -1,0 +1,55 @@
+<div class="euro-page">
+  <h2>Calendário de aulas</h2>
+
+  <app-section-card titulo="Registrar nova aula" subtitulo="Cria a data e já habilita a chamada dos matriculados">
+    <div class="nova-aula">
+      <mat-form-field appearance="outline">
+        <mat-label>Data</mat-label>
+        <input matInput type="date" [(ngModel)]="novaAulaData" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tema (opcional)</mat-label>
+        <input matInput [(ngModel)]="novaAulaTema" placeholder="Ex.: Boas práticas de manipulação" />
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="criarAula()">Registrar aula</button>
+    </div>
+  </app-section-card>
+
+  <app-section-card titulo="Aulas registradas">
+    @for (aula of aulas(); track aula.id) {
+      <button
+        type="button"
+        class="aula-item"
+        [class.aula-item--ativa]="aulaSelecionada()?.id === aula.id"
+        (click)="abrirChamada(aula)"
+      >
+        <span class="aula-item__data">{{ aula.data | date: 'dd/MM/yyyy' }}</span>
+        <span class="aula-item__tema">{{ aula.tema || 'Sem tema informado' }}</span>
+        <span class="aula-item__presenca">{{ aula.totalPresentes }}/{{ aula.totalEducandos }} presentes</span>
+      </button>
+    }
+    @if (aulas().length === 0) {
+      <p>Nenhuma aula registrada ainda nesta turma.</p>
+    }
+  </app-section-card>
+
+  @if (aulaSelecionada(); as aula) {
+    <app-section-card
+      [titulo]="'Chamada — ' + (aula.data | date: 'dd/MM/yyyy')"
+      [subtitulo]="aula.tema"
+    >
+      @for (item of presencas(); track item.educandoId) {
+        <label class="presenca-item">
+          <mat-checkbox [checked]="item.presente" (change)="alternarPresenca(item)" />
+          <span>{{ item.nome }}</span>
+          <span class="presenca-item__status" [class.falta]="!item.presente">
+            {{ item.presente ? 'Presente' : 'Falta' }}
+          </span>
+        </label>
+      }
+      <button mat-flat-button color="primary" [disabled]="salvando()" (click)="salvarChamada()">
+        {{ salvando() ? 'Salvando...' : 'Salvar chamada' }}
+      </button>
+    </app-section-card>
+  }
+</div>

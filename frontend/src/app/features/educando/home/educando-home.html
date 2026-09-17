@@ -15,25 +15,91 @@
     </div>
 
     @if (p.boletim.length > 0) {
-      <app-section-card titulo="Boletim" subtitulo="Notas e faltas por disciplina">
-        @for (disciplina of p.boletim; track disciplina.nome) {
-          <div class="boletim-item">
-            <div class="boletim-item__cabecalho">
-              <strong>{{ disciplina.nome }}</strong>
-              <span>{{ disciplina.presencasRealizadas }}/{{ disciplina.presencasTotal }} presenças</span>
+      <app-section-card titulo="Boletim — Notas e Faltas" subtitulo="Acompanhe suas notas, faltas e presenças por semestre">
+        <div class="boletim__acoes">
+          <button mat-stroked-button (click)="mostrarLegenda.set(!mostrarLegenda())">
+            {{ mostrarLegenda() ? 'Ocultar legenda' : 'Legenda' }}
+          </button>
+        </div>
+
+        @if (mostrarLegenda()) {
+          <div class="legenda">
+            <div class="legenda__coluna">
+              <span><strong>CP</strong> Checkpoint</span>
+              <span><strong>GS</strong> Global Solution</span>
+              <span><strong>MD</strong> Média do semestre</span>
             </div>
-            <div class="boletim-item__detalhes">
-              <span>Faltas: {{ disciplina.faltas }}</span>
-              <span>Frequência: {{ disciplina.frequenciaPercentual }}%</span>
-              @if (disciplina.md1 !== null) {
-                <span>MD 1º sem.: {{ disciplina.md1 }}</span>
-              }
-              @if (disciplina.mediaParcial !== null) {
-                <span>Média parcial: {{ disciplina.mediaParcial }}</span>
-              }
+            <div class="legenda__coluna">
+              <span><strong>FA</strong> Faltas no semestre</span>
+              <span><strong>PR(%)</strong> % de presença</span>
+            </div>
+            <div class="legenda__coluna">
+              <span><strong>MP</strong> Média parcial</span>
+              <span><strong>EXA</strong> Nota do exame</span>
+              <span><strong>MR</strong> Média final / resultado</span>
+            </div>
+            <div class="legenda__coluna legenda__cores">
+              <span><i class="ponto ponto--aprovado"></i> Aprovado (≥7)</span>
+              <span><i class="ponto ponto--atencao"></i> Atenção (5–6.9)</span>
+              <span><i class="ponto ponto--reprovado"></i> Reprovado (&lt;5)</span>
+              <span><i class="ponto ponto--nao-lancado"></i> Não lançado</span>
             </div>
           </div>
         }
+
+        <div class="boletim-tabela-wrapper">
+          <table class="boletim-tabela">
+            <thead>
+              <tr>
+                <th rowspan="2" class="col-disciplina">Disciplina</th>
+                <th colspan="3">1º Semestre</th>
+                <th colspan="3">2º Semestre</th>
+                <th colspan="2">Frequência</th>
+                <th colspan="3">Resultado</th>
+              </tr>
+              <tr>
+                <th>CP</th>
+                <th>GS</th>
+                <th>MD</th>
+                <th>CP</th>
+                <th>GS</th>
+                <th>MD</th>
+                <th>FA</th>
+                <th>PR(%)</th>
+                <th>MP</th>
+                <th>EXA</th>
+                <th>MR</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (d of p.boletim; track d.nome) {
+                <tr>
+                  <td class="col-disciplina">
+                    <strong>{{ d.nome }}</strong>
+                    <small>{{ d.presencasRealizadas }}/{{ d.presencasTotal }} presenças · {{ d.faltas }} falta(s)</small>
+                  </td>
+                  <td>{{ d.cp1 ?? '—' }}</td>
+                  <td>{{ d.gs1 ?? '—' }}</td>
+                  <td class="valor-destaque">
+                    <i class="ponto" [class]="'ponto--' + classeDesempenho(d.md1)"></i>{{ d.md1 ?? '—' }}
+                  </td>
+                  <td>{{ d.cp2 ?? '—' }}</td>
+                  <td>{{ d.gs2 ?? '—' }}</td>
+                  <td class="valor-destaque">
+                    <i class="ponto" [class]="'ponto--' + classeDesempenho(d.md2)"></i>{{ d.md2 ?? '—' }}
+                  </td>
+                  <td>{{ d.faltas }}</td>
+                  <td class="valor-destaque">{{ d.frequenciaPercentual }}%</td>
+                  <td class="valor-destaque">
+                    <i class="ponto" [class]="'ponto--' + classeDesempenho(d.mediaParcial)"></i>{{ d.mediaParcial ?? '—' }}
+                  </td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </app-section-card>
     }
 

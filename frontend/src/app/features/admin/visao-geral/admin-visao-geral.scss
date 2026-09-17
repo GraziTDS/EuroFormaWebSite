@@ -4,10 +4,75 @@
   gap: 16px;
 }
 
-.linha {
+.graficos {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grafico-wrapper {
+  position: relative;
+  height: 220px;
+}
+
+.distribuicao-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--euro-blue-dark);
+    min-width: 18px;
+    text-align: right;
+  }
+}
+
+.distribuicao-item__barra {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--neutral-border);
+  overflow: hidden;
+}
+
+.distribuicao-item__preenchido {
+  height: 100%;
+  background: var(--euro-blue);
+  border-radius: 999px;
+}
+
+.educador-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
-  font-size: 14px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--neutral-border);
+
+  span {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.educador-item__status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--success-green);
+
+  &.inativo {
+    color: var(--text-secondary);
+  }
 }

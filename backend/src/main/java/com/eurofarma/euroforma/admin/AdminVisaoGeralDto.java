@@ -1,7 +1,9 @@
 package com.eurofarma.euroforma.admin;
 
+import com.eurofarma.euroforma.common.PontoEvolucaoDto;
 import com.eurofarma.euroforma.educando.StatusEducando;
 
+import java.util.List;
 import java.util.Map;
 
 public record AdminVisaoGeralDto(
@@ -13,6 +15,7 @@ public record AdminVisaoGeralDto(
         long educadoresAtivos,
         long educadoresTotal,
         Map<StatusEducando, Long> distribuicaoPorStatus,
-        Map<String, Long> educandosPorCurso
+        Map<String, Long> educandosPorCurso,
+        List<PontoEvolucaoDto> evolucaoMensal
 ) {
 }

@@ -2,8 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../../core/auth/auth.service';
+import { Role } from '../../core/models';
+import { AssistenteCurriculo } from '../../features/educando/assistente/assistente-curriculo';
 
 interface ItemNav {
   rotulo: string;
@@ -18,6 +19,7 @@ const NAV_POR_GRUPO: Record<'educando' | 'educador' | 'admin', ItemNav[]> = {
   educador: [
     { rotulo: 'Dashboard', caminho: 'dashboard' },
     { rotulo: 'Educandos', caminho: 'educandos' },
+    { rotulo: 'Turmas', caminho: 'turmas' },
     { rotulo: 'Cadastrar', caminho: 'cadastro' },
   ],
   admin: [
@@ -28,9 +30,16 @@ const NAV_POR_GRUPO: Record<'educando' | 'educador' | 'admin', ItemNav[]> = {
   ],
 };
 
+const ROTULO_PERFIL: Record<Role, string> = {
+  EDUCANDO: 'Educando',
+  EDUCADOR: 'Educador',
+  COORDENADOR: 'Coordenador',
+  ADMINISTRADOR: 'Administrador',
+};
+
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, AssistenteCurriculo],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
 })
@@ -43,6 +52,13 @@ export class Shell {
     const grupo = this.authService.grupoDeRotas(this.authService.role());
     return grupo ? NAV_POR_GRUPO[grupo] : [];
   });
+
+  protected readonly rotuloPerfil = computed(() => {
+    const role = this.authService.role();
+    return role ? ROTULO_PERFIL[role] : '';
+  });
+
+  protected readonly ehEducando = computed(() => this.authService.role() === 'EDUCANDO');
 
   sair(): void {
     this.authService.logout();

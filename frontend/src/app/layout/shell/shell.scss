@@ -6,33 +6,75 @@
 }
 
 .shell__toolbar {
-  background: var(--euro-blue-dark) !important;
-  color: white;
+  background: white;
+  border-bottom: 1px solid var(--neutral-border);
+  display: flex;
+  align-items: center;
   gap: 24px;
+  padding: 10px 24px;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
 .shell__brand {
-  font-weight: 700;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shell__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--euro-blue-dark);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.shell__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+
+  strong {
+    color: var(--euro-blue-dark);
+    font-size: 15px;
+  }
+
+  small {
+    color: var(--text-secondary);
+    font-size: 9px;
+    letter-spacing: 0.6px;
+  }
 }
 
 .shell__nav {
   display: flex;
-  gap: 4px;
+  gap: 2px;
 
   a {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     text-decoration: none;
     padding: 8px 14px;
     border-radius: 8px;
     font-size: 14px;
 
+    &:hover {
+      background: var(--neutral-bg);
+    }
+
     &.ativo {
-      color: white;
-      background: rgba(255, 255, 255, 0.15);
+      color: var(--euro-blue-dark);
+      background: var(--euro-blue-surface);
       font-weight: 600;
     }
   }
@@ -42,11 +84,61 @@
   flex: 1 1 auto;
 }
 
+.shell__perfil-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--euro-blue-light);
+  color: var(--euro-blue);
+  background: var(--euro-blue-surface);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.shell__perfil-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--euro-blue);
+}
+
 .shell__usuario {
-  font-size: 13px;
-  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: right;
+
+  strong {
+    font-size: 13px;
+    color: var(--mat-sys-on-surface);
+  }
+
+  small {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+}
+
+.shell__logout {
+  color: var(--text-secondary);
 }
 
 .shell__conteudo {
   flex: 1 1 auto;
+}
+
+@media (max-width: 900px) {
+  .shell__toolbar {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .shell__nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
 }

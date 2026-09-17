@@ -4,15 +4,36 @@
   gap: 4px;
   padding: 16px 20px;
   min-width: 160px;
+  border-radius: 12px !important;
+}
+
+.stat-card__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--euro-blue-surface);
+  color: var(--euro-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .stat-card__label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .stat-card__value {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--euro-blue-dark);
 }

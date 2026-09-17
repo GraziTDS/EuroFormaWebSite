@@ -61,6 +61,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/educador/cadastro/educador-cadastro').then((m) => m.EducadorCadastro),
       },
+      {
+        path: 'turmas',
+        loadComponent: () => import('./features/turma/lista/turma-lista').then((m) => m.TurmaLista),
+      },
+      {
+        path: 'turmas/:id',
+        loadComponent: () => import('./features/turma/detalhe/turma-detalhe').then((m) => m.TurmaDetalhe),
+      },
     ],
   },
   {

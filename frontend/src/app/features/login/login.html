@@ -1,27 +1,66 @@
 <div class="login">
   <section class="login__hero">
-    <span class="login__brand">euroForma</span>
-    <span class="login__institute">INSTITUTO EUROFARMA</span>
-    <h1>Sua vida move a nossa.</h1>
-    <p>
-      A plataforma do Projeto Educandos do Instituto Eurofarma reúne turmas, notas, frequência e
-      oportunidades de capacitação para pessoas em situação de vulnerabilidade social — em um só lugar,
-      para educandos, educadores e gestão institucional.
-    </p>
-    <div class="login__chips">
-      <span>+700 educandos por semestre</span>
-      <span>4 cursos ativos</span>
+    <div class="login__topo">
+      <div class="login__brand">
+        <span class="login__logo"><mat-icon>school</mat-icon></span>
+        <span class="login__brand-text">
+          <strong>euro<em>Forma</em></strong>
+          <small>INSTITUTO EUROFARMA</small>
+        </span>
+      </div>
     </div>
+
+    <div class="login__meio">
+      <span class="login__badge"><i class="login__badge-dot"></i>Projeto Educandos · Eurofarma</span>
+
+      <h1>Sua vida <em>move</em> a nossa.</h1>
+
+      <p>
+        O <strong>Projeto Educandos do Instituto Eurofarma</strong> promove capacitação e
+        desenvolvimento para pessoas em situação de vulnerabilidade social.
+      </p>
+      <p>
+        Esta plataforma foi criada para conectar educandos, educadores e gestão em uma experiência
+        centralizada, segura e preparada para ampliar o impacto do projeto ao longo dos anos.
+      </p>
+
+      <div class="login__stats">
+        <div class="login__stat">
+          <mat-icon>school</mat-icon>
+          <strong>+700</strong>
+          <span>educandos por semestre</span>
+        </div>
+        <div class="login__stat">
+          <mat-icon>favorite</mat-icon>
+          <strong>Educação</strong>
+          <span>com impacto social</span>
+        </div>
+        <div class="login__stat">
+          <mat-icon>lock</mat-icon>
+          <strong>Plataforma</strong>
+          <span>segura e integrada</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="login__rodape">© 2026 Eurofarma — Programa de impacto social</p>
   </section>
 
   <section class="login__form-panel">
     <form class="login__form" [formGroup]="form" (ngSubmit)="entrar()">
-      <h2>Entrar</h2>
-      <p class="login__form-subtitle">Acesse com o e-mail e senha cadastrados pelo Instituto Eurofarma.</p>
+      <h2>Bem-vindo(a)</h2>
+      <p class="login__form-subtitle">Entre com seu e-mail e senha para acessar a plataforma.</p>
 
       <mat-form-field appearance="outline">
         <mat-label>E-mail</mat-label>
-        <input matInput type="email" formControlName="email" autocomplete="username" />
+        <mat-icon matPrefix>mail_outline</mat-icon>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          autocomplete="username"
+          placeholder="seu.email@eurofarma.com.br"
+        />
         @if (form.controls.email.hasError('required') && form.controls.email.touched) {
           <mat-error>Informe o e-mail</mat-error>
         }
@@ -30,8 +69,12 @@
         }
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Senha</mat-label>
+      <div class="login__campo-senha-cabecalho">
+        <span>Senha</span>
+        <a routerLink="/esqueci-senha">Esqueci minha senha</a>
+      </div>
+      <mat-form-field appearance="outline" class="login__campo-senha">
+        <mat-icon matPrefix>lock_outline</mat-icon>
         <input
           matInput
           [type]="ocultarSenha() ? 'password' : 'text'"
@@ -64,11 +107,10 @@
         }
       </button>
 
-      <a routerLink="/esqueci-senha" class="login__esqueci">Esqueci minha senha</a>
-
-      <p class="login__aviso">
-        Acesso restrito a educandos, educadores e administradores cadastrados pelo Instituto Eurofarma.
-      </p>
+      <div class="login__aviso">
+        <mat-icon>verified_user</mat-icon>
+        <span>Acesso protegido. Autenticação segura com token JWT.</span>
+      </div>
     </form>
   </section>
 </div>

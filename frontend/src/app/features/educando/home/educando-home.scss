@@ -9,29 +9,111 @@
   gap: 16px;
 }
 
-.boletim-item {
-  border-bottom: 1px solid var(--neutral-border);
-  padding-bottom: 10px;
+.boletim__acoes {
+  display: flex;
+  justify-content: flex-end;
+}
 
-  &:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background: var(--neutral-bg);
+  border: 1px solid var(--neutral-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legenda__coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: var(--mat-sys-on-surface);
   }
 }
 
-.boletim-item__cabecalho {
+.legenda__cores span {
   display: flex;
-  justify-content: space-between;
-  font-size: 14px;
+  align-items: center;
+  gap: 6px;
 }
 
-.boletim-item__detalhes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 4px;
+.ponto {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background: #9aa5b1;
+}
+
+.ponto--aprovado {
+  background: var(--euro-blue);
+}
+
+.ponto--atencao {
+  background: var(--status-inscrito);
+}
+
+.ponto--reprovado {
+  background: var(--status-desistente);
+}
+
+.ponto--nao-lancado {
+  background: #b6bfca;
+}
+
+.boletim-tabela-wrapper {
+  overflow-x: auto;
+}
+
+.boletim-tabela {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 720px;
+  font-size: 13px;
+
+  th,
+  td {
+    padding: 8px 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--neutral-border);
+    white-space: nowrap;
+  }
+
+  thead th {
+    background: var(--euro-blue-surface);
+    color: var(--euro-blue-dark);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .col-disciplina {
+    text-align: left;
+    min-width: 200px;
+
+    strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    small {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 11px;
+      white-space: normal;
+    }
+  }
+
+  .valor-destaque {
+    font-weight: 600;
+    color: var(--euro-blue-dark);
+  }
 }
 
 .evento-item {

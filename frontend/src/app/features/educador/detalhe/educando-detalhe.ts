@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../core/auth/auth.service';
 import { EducandoService } from '../../../core/services/educando.service';
 import { Auditoria, EducandoPerfil, StatusEducando } from '../../../core/models';
 import { SectionCard } from '../../../shared/section-card/section-card';
@@ -37,9 +38,14 @@ const OPCOES_STATUS: { valor: StatusEducando; rotulo: string }[] = [
 export class EducandoDetalhe implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly educandoService = inject(EducandoService);
+  private readonly authService = inject(AuthService);
   private readonly snackBar = inject(MatSnackBar);
 
   protected readonly opcoesStatus = OPCOES_STATUS;
+
+  // Sprint 4: gerir status/frequência do aluno (e ver o histórico de auditoria) passou a ser
+  // atribuição exclusiva do Administrador — Educador/Coordenador só acompanham em modo leitura.
+  protected readonly podeAdministrar = computed(() => this.authService.role() === 'ADMINISTRADOR');
 
   protected readonly educandoId = Number(this.route.snapshot.paramMap.get('id'));
   protected readonly perfil = signal<EducandoPerfil | null>(null);
@@ -74,6 +80,8 @@ export class EducandoDetalhe implements OnInit {
       this.frequenciaSelecionada.set(perfil.frequencia);
       this.motivoDesistencia.set(perfil.motivoDesistencia ?? '');
     });
-    this.educandoService.auditoria(this.educandoId).subscribe((lista) => this.auditoria.set(lista));
+    if (this.podeAdministrar()) {
+      this.educandoService.auditoria(this.educandoId).subscribe((lista) => this.auditoria.set(lista));
+    }
   }
 }

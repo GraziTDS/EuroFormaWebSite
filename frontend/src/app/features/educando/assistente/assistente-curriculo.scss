@@ -1,0 +1,130 @@
+:host {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1000;
+}
+
+.fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--euro-blue-dark);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(11, 59, 140, 0.4);
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &--aberto {
+    background: var(--euro-blue);
+  }
+
+  mat-icon {
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.painel {
+  position: absolute;
+  right: 0;
+  bottom: 72px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  max-height: 70vh;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--neutral-border);
+  box-shadow: 0 12px 32px rgba(11, 59, 140, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.painel__cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--euro-blue-dark);
+  color: white;
+
+  strong {
+    display: block;
+    font-size: 14px;
+  }
+
+  span {
+    display: block;
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+
+  button {
+    color: white;
+    flex-shrink: 0;
+  }
+}
+
+.painel__aviso {
+  padding: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.painel__mensagens {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.mensagem {
+  align-self: flex-start;
+  background: var(--neutral-bg);
+  border: 1px solid var(--neutral-border);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 13px;
+  max-width: 85%;
+  white-space: pre-wrap;
+
+  &--usuario {
+    align-self: flex-end;
+    background: var(--euro-blue-surface);
+    border-color: var(--euro-blue-light);
+    color: var(--euro-blue-dark);
+  }
+
+  &--carregando {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+  }
+}
+
+.painel__form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 14px 14px;
+  border-top: 1px solid var(--neutral-border);
+}
+
+.painel__campo {
+  flex: 1;
+}

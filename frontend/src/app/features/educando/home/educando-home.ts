@@ -19,6 +19,7 @@ import { StatCard } from '../../../shared/stat-card/stat-card';
 export class EducandoHome implements OnInit {
   protected readonly perfil = signal<EducandoPerfil | null>(null);
   protected readonly eventos = signal<Evento[]>([]);
+  protected readonly mostrarLegenda = signal(false);
 
   constructor(
     private readonly educandoService: EducandoService,
@@ -42,6 +43,19 @@ export class EducandoHome implements OnInit {
         this.snackBar.open(mensagem, 'Fechar', { duration: 4000 });
       },
     });
+  }
+
+  protected classeDesempenho(valor: number | null): string {
+    if (valor === null || valor === undefined) {
+      return 'nao-lancado';
+    }
+    if (valor >= 7) {
+      return 'aprovado';
+    }
+    if (valor >= 5) {
+      return 'atencao';
+    }
+    return 'reprovado';
   }
 
   private carregarEventos(): void {

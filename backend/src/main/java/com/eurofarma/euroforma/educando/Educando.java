@@ -1,6 +1,7 @@
 package com.eurofarma.euroforma.educando;
 
 import com.eurofarma.euroforma.curso.Curso;
+import com.eurofarma.euroforma.turma.Turma;
 import com.eurofarma.euroforma.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,10 @@ public class Educando {
     @ManyToOne(optional = false)
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
+
+    @ManyToOne
+    @JoinColumn(name = "turma_id")
+    private Turma turma;
 
     @Column(nullable = false)
     @Builder.Default

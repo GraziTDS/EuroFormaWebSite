@@ -15,11 +15,49 @@
   gap: 16px;
 }
 
+.dashboard__graficos {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grafico-wrapper {
+  position: relative;
+  height: 220px;
+}
+
 .distribuicao-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
+  gap: 10px;
+  padding: 6px 0;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--euro-blue-dark);
+    min-width: 18px;
+    text-align: right;
+  }
+}
+
+.distribuicao-item__barra {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--neutral-border);
+  overflow: hidden;
+}
+
+.distribuicao-item__preenchido {
+  height: 100%;
+  background: var(--euro-blue);
+  border-radius: 999px;
 }
 
 .educando-item {

@@ -1,4 +1,7 @@
 <mat-card class="stat-card" appearance="outlined">
+  @if (icon()) {
+    <span class="stat-card__icon"><mat-icon>{{ icon() }}</mat-icon></span>
+  }
   <span class="stat-card__label">{{ label() }}</span>
   <span class="stat-card__value">{{ value() }}</span>
   @if (hint()) {

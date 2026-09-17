@@ -1,5 +1,6 @@
 package com.eurofarma.euroforma.admin;
 
+import com.eurofarma.euroforma.common.EvolucaoMensalCalculator;
 import com.eurofarma.euroforma.educando.Educando;
 import com.eurofarma.euroforma.educando.EducandoRepository;
 import com.eurofarma.euroforma.educando.StatusEducando;
@@ -38,8 +39,10 @@ public class AdminService {
         Map<String, Long> porCurso = educandos.stream()
                 .collect(Collectors.groupingBy(e -> e.getCurso().getNome(), Collectors.counting()));
 
+        var evolucaoMensal = EvolucaoMensalCalculator.calcular(educandos.stream().map(Educando::getIniciadoEm).toList());
+
         return new AdminVisaoGeralDto(
                 total, ativos, presencaMedia, taxaConclusao, concluidos,
-                educadoresAtivos, educadores.size(), distribuicao, porCurso);
+                educadoresAtivos, educadores.size(), distribuicao, porCurso, evolucaoMensal);
     }
 }

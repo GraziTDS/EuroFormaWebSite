@@ -59,4 +59,14 @@ export class EducandoService {
   baixarCurriculoUrl(id: number): string {
     return `/api/educandos/${id}/curriculo`;
   }
+
+  exportarExcel(): Observable<Blob> {
+    return this.http.get('/api/educandos/exportar-excel', { responseType: 'blob' });
+  }
+
+  importarExcel(arquivo: File): Observable<{ criados: number; erros: string[] }> {
+    const formData = new FormData();
+    formData.append('arquivo', arquivo);
+    return this.http.post<{ criados: number; erros: string[] }>('/api/educandos/importar-excel', formData);
+  }
 }

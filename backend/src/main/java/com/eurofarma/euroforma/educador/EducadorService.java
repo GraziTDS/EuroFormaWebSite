@@ -1,6 +1,7 @@
 package com.eurofarma.euroforma.educador;
 
 import com.eurofarma.euroforma.common.ApiException;
+import com.eurofarma.euroforma.common.EvolucaoMensalCalculator;
 import com.eurofarma.euroforma.educando.Educando;
 import com.eurofarma.euroforma.educando.EducandoRepository;
 import com.eurofarma.euroforma.educando.StatusEducando;
@@ -57,7 +58,9 @@ public class EducadorService {
                 .map(EducandoResumoDto::de)
                 .toList();
 
-        return new EducadorDashboardDto(total, ativos, concluintes, taxaConclusao, distribuicao, recentes);
+        var evolucaoMensal = EvolucaoMensalCalculator.calcular(educandos.stream().map(Educando::getIniciadoEm).toList());
+
+        return new EducadorDashboardDto(total, ativos, concluintes, taxaConclusao, distribuicao, recentes, evolucaoMensal);
     }
 
     private long contar(List<Educando> educandos, StatusEducando status) {

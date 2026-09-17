@@ -1,0 +1,53 @@
+<button
+  type="button"
+  class="fab"
+  [class.fab--aberto]="aberto()"
+  (click)="alternar()"
+  aria-label="Assistente de currículo"
+  title="Assistente de currículo"
+>
+  <mat-icon>{{ aberto() ? 'close' : 'smart_toy' }}</mat-icon>
+</button>
+
+@if (aberto()) {
+  <div class="painel">
+    <div class="painel__cabecalho">
+      <div>
+        <strong>Assistente de Currículo</strong>
+        <span>Tire dúvidas e receba dicas para melhorar seu currículo</span>
+      </div>
+      <button mat-icon-button (click)="fechar()" aria-label="Fechar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    @if (!disponivel()) {
+      <p class="painel__aviso">
+        Este recurso ainda não foi configurado pelo Instituto Eurofarma nesta instalação.
+      </p>
+    } @else {
+      <div class="painel__mensagens">
+        @for (mensagem of mensagens(); track $index) {
+          <div class="mensagem" [class.mensagem--usuario]="mensagem.role === 'user'">
+            {{ mensagem.content }}
+          </div>
+        }
+        @if (enviando()) {
+          <div class="mensagem mensagem--carregando">
+            <mat-spinner diameter="16" />
+          </div>
+        }
+      </div>
+
+      <form class="painel__form" (ngSubmit)="enviar()">
+        <mat-form-field appearance="outline" class="painel__campo">
+          <mat-label>Escreva sua mensagem</mat-label>
+          <textarea matInput rows="2" [(ngModel)]="rascunho" name="rascunho" [disabled]="enviando()"></textarea>
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" [disabled]="enviando() || !rascunho.trim()">
+          Enviar
+        </button>
+      </form>
+    }
+  </div>
+}
