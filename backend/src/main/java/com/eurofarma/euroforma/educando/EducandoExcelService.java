@@ -176,9 +176,7 @@ public class EducandoExcelService {
      * um e-mail temporário é gerado a partir do CPF e um aviso é retornado pedindo a atualização posterior.
      */
     public ResultadoImportacao importar(MultipartFile arquivo) {
-        List<String> erros = new ArrayList<>();
-        List<String> avisos = new ArrayList<>();
-        int criados = 0;
+        List<LinhaImportada> linhas = new ArrayList<>();
 
         try (Workbook workbook = new XSSFWorkbook(arquivo.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -203,17 +201,17 @@ public class EducandoExcelService {
                     continue;
                 }
 
+                int numeroLinha = i + 1;
                 String nome = valor(row, colunas, "nome", formatter);
                 String cpf = valor(row, colunas, "cpf", formatter);
                 String cursoNome = valor(row, colunas, "curso", formatter);
+                boolean emailTemporario = false;
+                String email = valor(row, colunas, "email", formatter);
 
                 try {
-                    String email = valor(row, colunas, "email", formatter);
                     if (email == null || email.isBlank()) {
                         email = gerarEmailTemporario(cpf);
-                        avisos.add("Linha " + (i + 1) + " (" + nome + "): e-mail não informado na planilha; "
-                                + "foi gerado o e-mail temporário " + email + " — atualize o cadastro do educando "
-                                + "para permitir o acesso/login real.");
+                        emailTemporario = true;
                     }
 
                     Curso curso = cursoRepository.findAll().stream()
@@ -238,16 +236,18 @@ public class EducandoExcelService {
                             valor(row, colunas, "rua", formatter),
                             valor(row, colunas, "bairro", formatter),
                             valor(row, colunas, "cidade", formatter)));
-                    criados++;
+
+                    linhas.add(new LinhaImportada(numeroLinha, nome, cpf, cursoNome, email, emailTemporario, null));
                 } catch (Exception ex) {
-                    erros.add("Linha " + (i + 1) + " (" + nome + "): " + ex.getMessage());
+                    linhas.add(new LinhaImportada(numeroLinha, nome, cpf, cursoNome, null, false, ex.getMessage()));
                 }
             }
         } catch (IOException e) {
             throw new IllegalStateException("Falha ao ler a planilha enviada", e);
         }
 
-        return new ResultadoImportacao(criados, avisos, erros);
+        int criados = (int) linhas.stream().filter(l -> l.erro() == null).count();
+        return new ResultadoImportacao(criados, linhas);
     }
 
     private Map<String, Integer> mapearColunas(Row linhaCabecalho, DataFormatter formatter) {
@@ -306,6 +306,19 @@ public class EducandoExcelService {
         return valor == null ? "" : valor;
     }
 
-    public record ResultadoImportacao(int criados, List<String> avisos, List<String> erros) {
+    /** Uma linha da planilha importada, com os dados que foram usados no cadastro (para revisão na tela) e,
+     *  em caso de falha, a mensagem de erro — {@code erro} é {@code null} quando a linha foi importada com sucesso. */
+    public record LinhaImportada(
+            int linha,
+            String nome,
+            String cpf,
+            String curso,
+            String email,
+            boolean emailTemporario,
+            String erro
+    ) {
+    }
+
+    public record ResultadoImportacao(int criados, List<LinhaImportada> linhas) {
     }
 }

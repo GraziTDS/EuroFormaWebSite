@@ -7,10 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { EducandoService } from '../../../core/services/educando.service';
 import { EducandoResumo, StatusEducando } from '../../../core/models';
 import { StatusChip } from '../../../shared/status-chip/status-chip';
 import { baixarArquivo } from '../../../shared/download-file';
+import { ImportacaoResultadoDialog } from './importacao-resultado-dialog/importacao-resultado-dialog';
 
 const OPCOES_STATUS: { valor: StatusEducando | ''; rotulo: string }[] = [
   { valor: '', rotulo: 'Todos os status' },
@@ -41,6 +43,7 @@ export class EducandoLista implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
 
   protected readonly titulo = this.route.snapshot.data['titulo'] ?? 'Educandos';
   protected readonly opcoesStatus = OPCOES_STATUS;
@@ -87,15 +90,16 @@ export class EducandoLista implements OnInit {
     this.educandoService.importarExcel(arquivo).subscribe({
       next: (resultado) => {
         this.importando.set(false);
-        const mensagem = `${resultado.criados} educando(s) importado(s).` +
-          (resultado.avisos.length > 0 ? ` ${resultado.avisos.length} com aviso (ex.: e-mail temporário).` : '') +
-          (resultado.erros.length > 0 ? ` ${resultado.erros.length} linha(s) com erro.` : '');
-        this.snackBar.open(mensagem, 'Fechar', { duration: 6000 });
         this.buscar();
+        this.dialog.open(ImportacaoResultadoDialog, {
+          data: resultado,
+          width: '760px',
+          maxWidth: '95vw',
+        });
       },
       error: (err) => {
         this.importando.set(false);
-        this.snackBar.open(err?.error?.message ?? 'Falha ao importar planilha.', 'Fechar', { duration: 4000 });
+        this.snackBar.open(err?.error?.message ?? 'Falha ao importar planilha.', 'Fechar', { duration: 6000 });
       },
     });
   }

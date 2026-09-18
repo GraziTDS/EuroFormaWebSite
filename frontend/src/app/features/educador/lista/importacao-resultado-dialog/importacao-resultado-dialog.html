@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Resultado da importação</h2>
+
+<mat-dialog-content>
+  <p class="resumo">
+    {{ data.criados }} educando(s) importado(s) com sucesso
+    @if (erros.length > 0) {
+      · {{ erros.length }} linha(s) com erro
+    }
+  </p>
+
+  @if (sucesso.length > 0) {
+    <h3 class="titulo-secao">Registros importados</h3>
+    <div class="tabela-wrapper">
+      <table class="tabela-resultado">
+        <thead>
+          <tr>
+            <th>Linha</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Curso</th>
+            <th>E-mail</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (linha of sucesso; track linha.linha) {
+            <tr>
+              <td>{{ linha.linha }}</td>
+              <td>{{ linha.nome }}</td>
+              <td>{{ linha.cpf ?? '—' }}</td>
+              <td>{{ linha.curso ?? '—' }}</td>
+              <td>
+                {{ linha.email ?? '—' }}
+                @if (linha.emailTemporario) {
+                  <span class="badge-aviso">temporário</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (erros.length > 0) {
+    <h3 class="titulo-secao titulo-secao--erro">Linhas com erro</h3>
+    <ul class="lista-erros">
+      @for (linha of erros; track linha.linha) {
+        <li><strong>Linha {{ linha.linha }}</strong> ({{ linha.nome || '—' }}): {{ linha.erro }}</li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="confirmar()">Confirmar</button>
+</mat-dialog-actions>

@@ -11,6 +11,21 @@ export interface CadastroEducandoPayload {
   cursoId: number;
 }
 
+export interface LinhaImportada {
+  linha: number;
+  nome: string;
+  cpf: string | null;
+  curso: string | null;
+  email: string | null;
+  emailTemporario: boolean;
+  erro: string | null;
+}
+
+export interface ResultadoImportacao {
+  criados: number;
+  linhas: LinhaImportada[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class EducandoService {
   constructor(private readonly http: HttpClient) {}
@@ -68,12 +83,9 @@ export class EducandoService {
     return this.http.get('/api/educandos/modelo-importacao-excel', { responseType: 'blob' });
   }
 
-  importarExcel(arquivo: File): Observable<{ criados: number; avisos: string[]; erros: string[] }> {
+  importarExcel(arquivo: File): Observable<ResultadoImportacao> {
     const formData = new FormData();
     formData.append('arquivo', arquivo);
-    return this.http.post<{ criados: number; avisos: string[]; erros: string[] }>(
-      '/api/educandos/importar-excel',
-      formData,
-    );
+    return this.http.post<ResultadoImportacao>('/api/educandos/importar-excel', formData);
   }
 }
