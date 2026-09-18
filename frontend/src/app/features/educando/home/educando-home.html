@@ -1,6 +1,10 @@
 @if (perfil(); as p) {
   <div class="euro-page">
     <app-section-card titulo="Olá, {{ p.nome.split(' ')[0] }}!" [subtitulo]="p.curso">
+      <a acao mat-stroked-button [href]="urlMoodle" target="_blank" rel="noopener noreferrer">
+        <mat-icon>open_in_new</mat-icon>
+        Acessar Moodle
+      </a>
       <p>Progresso do curso</p>
       <mat-progress-bar mode="determinate" [value]="p.progresso" />
       <span class="home__progresso-valor">{{ p.progresso }}%</span>

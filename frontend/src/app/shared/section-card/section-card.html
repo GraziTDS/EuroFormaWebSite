@@ -1,9 +1,14 @@
 <mat-card class="section-card" appearance="outlined">
   <div class="section-card__header">
-    <h3>{{ titulo() }}</h3>
-    @if (subtitulo()) {
-      <p>{{ subtitulo() }}</p>
-    }
+    <div class="section-card__titulos">
+      <h3>{{ titulo() }}</h3>
+      @if (subtitulo()) {
+        <p>{{ subtitulo() }}</p>
+      }
+    </div>
+    <div class="section-card__acao">
+      <ng-content select="[acao]" />
+    </div>
   </div>
   <div class="section-card__content">
     <ng-content />

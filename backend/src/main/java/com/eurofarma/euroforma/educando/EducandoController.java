@@ -99,6 +99,17 @@ public class EducandoController {
                 .body(planilha);
     }
 
+    @GetMapping("/modelo-importacao-excel")
+    @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
+    public ResponseEntity<byte[]> modeloImportacaoExcel() {
+        byte[] planilha = educandoExcelService.gerarModeloImportacao();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"modelo-importacao-educandos.xlsx\"")
+                .contentType(org.springframework.http.MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(planilha);
+    }
+
     @PostMapping(value = "/importar-excel", consumes = "multipart/form-data")
     @PreAuthorize("hasAnyRole('EDUCADOR', 'COORDENADOR', 'ADMINISTRADOR')")
     public EducandoExcelService.ResultadoImportacao importarExcel(@RequestParam("arquivo") MultipartFile arquivo) {

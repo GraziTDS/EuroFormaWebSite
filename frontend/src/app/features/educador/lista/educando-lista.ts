@@ -68,6 +68,12 @@ export class EducandoLista implements OnInit {
     this.educandoService.exportarExcel().subscribe((blob) => baixarArquivo(blob, 'educandos.xlsx'));
   }
 
+  baixarModelo(): void {
+    this.educandoService
+      .baixarModeloImportacao()
+      .subscribe((blob) => baixarArquivo(blob, 'modelo-importacao-educandos.xlsx'));
+  }
+
   abrirSeletorImportacao(): void {
     this.inputImportar?.nativeElement.click();
   }

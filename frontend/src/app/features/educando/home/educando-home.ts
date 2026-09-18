@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EducandoService } from '../../../core/services/educando.service';
@@ -12,7 +13,7 @@ import { StatCard } from '../../../shared/stat-card/stat-card';
 
 @Component({
   selector: 'app-educando-home',
-  imports: [DatePipe, RouterLink, MatButtonModule, MatProgressBarModule, SectionCard, StatCard],
+  imports: [DatePipe, RouterLink, MatButtonModule, MatIconModule, MatProgressBarModule, SectionCard, StatCard],
   templateUrl: './educando-home.html',
   styleUrl: './educando-home.scss',
 })
@@ -20,6 +21,9 @@ export class EducandoHome implements OnInit {
   protected readonly perfil = signal<EducandoPerfil | null>(null);
   protected readonly eventos = signal<Evento[]>([]);
   protected readonly mostrarLegenda = signal(false);
+
+  // TODO: substituir pela URL real do Moodle do Instituto Eurofarma.
+  protected readonly urlMoodle = 'https://moodle.institutoeurofarma.org.br';
 
   constructor(
     private readonly educandoService: EducandoService,

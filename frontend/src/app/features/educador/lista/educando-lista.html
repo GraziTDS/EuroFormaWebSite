@@ -9,6 +9,7 @@
         hidden
         (change)="aoSelecionarArquivoImportacao($event)"
       />
+      <button mat-stroked-button (click)="baixarModelo()">Baixar modelo</button>
       <button mat-stroked-button [disabled]="importando()" (click)="abrirSeletorImportacao()">
         {{ importando() ? 'Importando...' : 'Importar Excel' }}
       </button>

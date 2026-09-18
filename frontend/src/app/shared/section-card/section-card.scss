@@ -5,6 +5,10 @@
 
 .section-card__header {
   margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 
   h3 {
     margin: 0;

@@ -22,6 +22,8 @@ public class EducandoExcelService {
     private static final List<String> COLUNAS_EXPORTACAO = List.of(
             "Nome", "E-mail", "CPF", "Telefone", "Curso", "Turma", "Status", "Frequência (%)", "Progresso (%)", "Média");
 
+    private static final List<String> COLUNAS_MODELO = List.of("Nome completo", "CPF", "Telefone", "E-mail", "Curso");
+
     private final EducandoRepository educandoRepository;
     private final EducandoService educandoService;
     private final CursoRepository cursoRepository;
@@ -66,6 +68,49 @@ public class EducandoExcelService {
             return out.toByteArray();
         } catch (IOException e) {
             throw new IllegalStateException("Falha ao gerar planilha de educandos", e);
+        }
+    }
+
+    /**
+     * Planilha-modelo pronta para preencher e importar: mesmas colunas esperadas por {@link #importar},
+     * já com uma linha de exemplo.
+     */
+    public byte[] gerarModeloImportacao() {
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Modelo");
+
+            CellStyle estiloCabecalho = workbook.createCellStyle();
+            Font fonteCabecalho = workbook.createFont();
+            fonteCabecalho.setBold(true);
+            estiloCabecalho.setFont(fonteCabecalho);
+
+            Row cabecalho = sheet.createRow(0);
+            for (int i = 0; i < COLUNAS_MODELO.size(); i++) {
+                Cell celula = cabecalho.createCell(i);
+                celula.setCellValue(COLUNAS_MODELO.get(i));
+                celula.setCellStyle(estiloCabecalho);
+            }
+
+            String primeiroCurso = cursoRepository.findAll().stream()
+                    .findFirst()
+                    .map(Curso::getNome)
+                    .orElse("Auxiliar de Farmácia");
+
+            Row exemplo = sheet.createRow(1);
+            exemplo.createCell(0).setCellValue("Maria da Silva");
+            exemplo.createCell(1).setCellValue("123.456.789-00");
+            exemplo.createCell(2).setCellValue("(11) 90000-0000");
+            exemplo.createCell(3).setCellValue("maria.silva@email.com");
+            exemplo.createCell(4).setCellValue(primeiroCurso);
+
+            for (int i = 0; i < COLUNAS_MODELO.size(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException("Falha ao gerar planilha-modelo", e);
         }
     }
 
