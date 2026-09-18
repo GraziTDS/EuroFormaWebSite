@@ -67,7 +67,9 @@ class EducandoServiceTest {
     @Test
     void cadastrarDeveCriarUsuarioEEducandoEEnviarConvite() {
         Curso curso = Curso.builder().id(2L).nome("Logística Farmacêutica").build();
-        CadastroEducandoRequest request = new CadastroEducandoRequest("Novo Educando", null, null, "novo@email.com", 2L);
+        CadastroEducandoRequest request = new CadastroEducandoRequest(
+                "Novo Educando", null, null, "novo@email.com", 2L,
+                null, null, null, null, null, null, null, null, null, null, null);
 
         when(usuarioRepository.existsByEmailIgnoreCase("novo@email.com")).thenReturn(false);
         when(cursoRepository.findById(2L)).thenReturn(Optional.of(curso));

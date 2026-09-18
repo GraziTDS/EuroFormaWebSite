@@ -12,17 +12,52 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+/**
+ * Import/export de educandos em Excel, com o modelo/cabeçalho alinhado à planilha institucional
+ * "BASE DE DADOS EDUCACIONAL" já usada pelo Instituto Eurofarma — o reconhecimento de colunas é feito
+ * pelo NOME do cabeçalho (não pela posição), ignorando maiúsculas/minúsculas, acentos e ":" no final,
+ * para aceitar tanto o modelo gerado aqui quanto a planilha real da instituição.
+ */
 @Service
 @RequiredArgsConstructor
 public class EducandoExcelService {
 
     private static final List<String> COLUNAS_EXPORTACAO = List.of(
-            "Nome", "E-mail", "CPF", "Telefone", "Curso", "Turma", "Status", "Frequência (%)", "Progresso (%)", "Média");
+            "Nome", "E-mail", "CPF", "Telefone", "Curso", "Turma", "Status", "Frequência (%)", "Progresso (%)", "Média",
+            "RG", "Nome social", "Gênero", "Raça", "Região", "Nome do responsável", "Contato do responsável");
 
-    private static final List<String> COLUNAS_MODELO = List.of("Nome completo", "CPF", "Telefone", "E-mail", "Curso");
+    private static final List<String> COLUNAS_MODELO = List.of(
+            "Nome completo:", "CPF:", "RG:", "Nome Social:", "Gênero:", "Raça:", "Telefone WhatsApp:",
+            "E-mail (opcional):", "Curso:", "Região:", "Nome do Responsável:", "Contato do Responsável:",
+            "CEP:", "Rua:", "Bairro:", "Cidade:");
+
+    /** Cada campo aceita várias grafias de cabeçalho (com/sem acento, com/sem ":", inclusive o erro de digitação
+     *  "Resposável" que existe na planilha oficial do Instituto). */
+    private static final Map<String, List<String>> SINONIMOS_CABECALHO = Map.ofEntries(
+            Map.entry("nome", List.of("nome completo", "nome", "nome completo do(a) candidato(a)", "nome do aluno")),
+            Map.entry("cpf", List.of("cpf", "para comecar, digite seu cpf no campo abaixo")),
+            Map.entry("rg", List.of("rg")),
+            Map.entry("nomeSocial", List.of("nome social", "nome social (se houver)")),
+            Map.entry("genero", List.of("genero", "genero (se houver)")),
+            Map.entry("raca", List.of("raca", "qual sua raca/etnia? (autodeclaracao)")),
+            Map.entry("telefone", List.of("telefone whatsapp", "telefone", "celular/whatsapp", "celular")),
+            Map.entry("email", List.of("e-mail", "email", "e-mail (opcional)", "endereco de e-mail")),
+            Map.entry("curso", List.of("curso")),
+            Map.entry("regiao", List.of("regiao", "regiao onde mora")),
+            Map.entry("nomeResponsavel", List.of("nome do responsavel", "nome do resposavel")),
+            Map.entry("contatoResponsavel", List.of("contato do responsavel", "contato do responsavel legal (ou emergencia)")),
+            Map.entry("cep", List.of("cep")),
+            Map.entry("rua", List.of("rua", "nome da rua")),
+            Map.entry("bairro", List.of("bairro")),
+            Map.entry("cidade", List.of("cidade"))
+    );
 
     private final EducandoRepository educandoRepository;
     private final EducandoService educandoService;
@@ -58,6 +93,13 @@ public class EducandoExcelService {
                 row.createCell(7).setCellValue(e.getFrequencia());
                 row.createCell(8).setCellValue(e.getProgresso());
                 row.createCell(9).setCellValue(e.getMedia().doubleValue());
+                row.createCell(10).setCellValue(vazioSeNulo(e.getRg()));
+                row.createCell(11).setCellValue(vazioSeNulo(e.getNomeSocial()));
+                row.createCell(12).setCellValue(vazioSeNulo(e.getGenero()));
+                row.createCell(13).setCellValue(vazioSeNulo(e.getRaca()));
+                row.createCell(14).setCellValue(vazioSeNulo(e.getRegiao()));
+                row.createCell(15).setCellValue(vazioSeNulo(e.getNomeResponsavel()));
+                row.createCell(16).setCellValue(vazioSeNulo(e.getContatoResponsavel()));
             }
 
             for (int i = 0; i < COLUNAS_EXPORTACAO.size(); i++) {
@@ -72,8 +114,9 @@ public class EducandoExcelService {
     }
 
     /**
-     * Planilha-modelo pronta para preencher e importar: mesmas colunas esperadas por {@link #importar},
-     * já com uma linha de exemplo.
+     * Planilha-modelo pronta para preencher e importar, com o mesmo cabeçalho usado pela planilha
+     * "BASE DE DADOS EDUCACIONAL" do Instituto — inclusive é possível reaproveitar a planilha institucional
+     * já preenchida diretamente em {@link #importar}, já que as colunas são lidas pelo nome.
      */
     public byte[] gerarModeloImportacao() {
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -99,9 +142,20 @@ public class EducandoExcelService {
             Row exemplo = sheet.createRow(1);
             exemplo.createCell(0).setCellValue("Maria da Silva");
             exemplo.createCell(1).setCellValue("123.456.789-00");
-            exemplo.createCell(2).setCellValue("(11) 90000-0000");
-            exemplo.createCell(3).setCellValue("maria.silva@email.com");
-            exemplo.createCell(4).setCellValue(primeiroCurso);
+            exemplo.createCell(2).setCellValue("12.345.678-9");
+            exemplo.createCell(3).setCellValue("");
+            exemplo.createCell(4).setCellValue("Feminino");
+            exemplo.createCell(5).setCellValue("Parda");
+            exemplo.createCell(6).setCellValue("(11) 90000-0000");
+            exemplo.createCell(7).setCellValue("maria.silva@email.com");
+            exemplo.createCell(8).setCellValue(primeiroCurso);
+            exemplo.createCell(9).setCellValue("Zona Leste");
+            exemplo.createCell(10).setCellValue("João da Silva");
+            exemplo.createCell(11).setCellValue("(11) 90000-0001");
+            exemplo.createCell(12).setCellValue("03000-000");
+            exemplo.createCell(13).setCellValue("Rua das Flores");
+            exemplo.createCell(14).setCellValue("Centro");
+            exemplo.createCell(15).setCellValue("São Paulo");
 
             for (int i = 0; i < COLUNAS_MODELO.size(); i++) {
                 sheet.autoSizeColumn(i);
@@ -115,35 +169,75 @@ public class EducandoExcelService {
     }
 
     /**
-     * Espera colunas na ordem: Nome completo | CPF | Telefone | E-mail | Curso (com cabeçalho na primeira linha).
+     * Lê as colunas pelo NOME do cabeçalho (linha 1), não pela posição — assim aceita tanto o modelo
+     * gerado por {@link #gerarModeloImportacao} quanto a planilha "BASE DE DADOS EDUCACIONAL" real do
+     * Instituto. "Nome completo" e "Curso" são obrigatórios; os demais campos institucionais são opcionais.
+     * A planilha oficial da instituição não tem coluna de e-mail (necessário para login) — quando ausente,
+     * um e-mail temporário é gerado a partir do CPF e um aviso é retornado pedindo a atualização posterior.
      */
     public ResultadoImportacao importar(MultipartFile arquivo) {
         List<String> erros = new ArrayList<>();
+        List<String> avisos = new ArrayList<>();
         int criados = 0;
 
         try (Workbook workbook = new XSSFWorkbook(arquivo.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
             DataFormatter formatter = new DataFormatter();
 
+            Row linhaCabecalho = sheet.getRow(0);
+            if (linhaCabecalho == null) {
+                throw ApiException.requisicaoInvalida("A planilha está vazia");
+            }
+            Map<String, Integer> colunas = mapearColunas(linhaCabecalho, formatter);
+
+            Integer colNome = colunas.get("nome");
+            Integer colCurso = colunas.get("curso");
+            if (colNome == null || colCurso == null) {
+                throw ApiException.requisicaoInvalida(
+                        "Não foi possível identificar as colunas obrigatórias 'Nome completo' e 'Curso' no cabeçalho da planilha");
+            }
+
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
-                if (row == null || estaVazia(row, formatter)) {
+                if (row == null || estaVazia(row, colNome, formatter)) {
                     continue;
                 }
 
-                String nome = formatter.formatCellValue(row.getCell(0)).trim();
-                String cpf = formatter.formatCellValue(row.getCell(1)).trim();
-                String telefone = formatter.formatCellValue(row.getCell(2)).trim();
-                String email = formatter.formatCellValue(row.getCell(3)).trim();
-                String cursoNome = formatter.formatCellValue(row.getCell(4)).trim();
+                String nome = valor(row, colunas, "nome", formatter);
+                String cpf = valor(row, colunas, "cpf", formatter);
+                String cursoNome = valor(row, colunas, "curso", formatter);
 
                 try {
+                    String email = valor(row, colunas, "email", formatter);
+                    if (email == null || email.isBlank()) {
+                        email = gerarEmailTemporario(cpf);
+                        avisos.add("Linha " + (i + 1) + " (" + nome + "): e-mail não informado na planilha; "
+                                + "foi gerado o e-mail temporário " + email + " — atualize o cadastro do educando "
+                                + "para permitir o acesso/login real.");
+                    }
+
                     Curso curso = cursoRepository.findAll().stream()
                             .filter(c -> c.getNome().equalsIgnoreCase(cursoNome))
                             .findFirst()
                             .orElseThrow(() -> ApiException.requisicaoInvalida("Curso não encontrado: " + cursoNome));
 
-                    educandoService.cadastrar(new CadastroEducandoRequest(nome, cpf, telefone, email, curso.getId()));
+                    educandoService.cadastrar(new CadastroEducandoRequest(
+                            nome,
+                            cpf,
+                            valor(row, colunas, "telefone", formatter),
+                            email,
+                            curso.getId(),
+                            valor(row, colunas, "rg", formatter),
+                            valor(row, colunas, "nomeSocial", formatter),
+                            valor(row, colunas, "genero", formatter),
+                            valor(row, colunas, "raca", formatter),
+                            valor(row, colunas, "regiao", formatter),
+                            valor(row, colunas, "nomeResponsavel", formatter),
+                            valor(row, colunas, "contatoResponsavel", formatter),
+                            valor(row, colunas, "cep", formatter),
+                            valor(row, colunas, "rua", formatter),
+                            valor(row, colunas, "bairro", formatter),
+                            valor(row, colunas, "cidade", formatter)));
                     criados++;
                 } catch (Exception ex) {
                     erros.add("Linha " + (i + 1) + " (" + nome + "): " + ex.getMessage());
@@ -153,14 +247,65 @@ public class EducandoExcelService {
             throw new IllegalStateException("Falha ao ler a planilha enviada", e);
         }
 
-        return new ResultadoImportacao(criados, erros);
+        return new ResultadoImportacao(criados, avisos, erros);
     }
 
-    private boolean estaVazia(Row row, DataFormatter formatter) {
-        Cell primeiraCelula = row.getCell(0);
-        return primeiraCelula == null || formatter.formatCellValue(primeiraCelula).isBlank();
+    private Map<String, Integer> mapearColunas(Row linhaCabecalho, DataFormatter formatter) {
+        Map<String, Integer> colunas = new LinkedHashMap<>();
+        for (int c = 0; c < linhaCabecalho.getLastCellNum(); c++) {
+            Cell celula = linhaCabecalho.getCell(c);
+            if (celula == null) {
+                continue;
+            }
+            String normalizado = normalizar(formatter.formatCellValue(celula));
+            if (normalizado.isBlank()) {
+                continue;
+            }
+            for (Map.Entry<String, List<String>> entry : SINONIMOS_CABECALHO.entrySet()) {
+                if (!colunas.containsKey(entry.getKey()) && entry.getValue().contains(normalizado)) {
+                    colunas.put(entry.getKey(), c);
+                    break;
+                }
+            }
+        }
+        return colunas;
     }
 
-    public record ResultadoImportacao(int criados, List<String> erros) {
+    private String valor(Row row, Map<String, Integer> colunas, String campo, DataFormatter formatter) {
+        Integer indice = colunas.get(campo);
+        if (indice == null) {
+            return null;
+        }
+        String valor = formatter.formatCellValue(row.getCell(indice)).trim();
+        return valor.isBlank() ? null : valor;
+    }
+
+    private String gerarEmailTemporario(String cpf) {
+        String digitos = cpf == null ? "" : cpf.replaceAll("\\D", "");
+        String identificador = digitos.isBlank() ? UUID.randomUUID().toString().substring(0, 8) : digitos;
+        return "pendente." + identificador + "@educando.euroforma.local";
+    }
+
+    private String normalizar(String texto) {
+        String semAcento = Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "");
+        return semAcento
+                .toLowerCase()
+                .trim()
+                .replaceAll(":\\s*$", "")
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
+    private boolean estaVazia(Row row, int colNome, DataFormatter formatter) {
+        Cell celulaNome = row.getCell(colNome);
+        return celulaNome == null || formatter.formatCellValue(celulaNome).isBlank();
+    }
+
+    private String vazioSeNulo(String valor) {
+        return valor == null ? "" : valor;
+    }
+
+    public record ResultadoImportacao(int criados, List<String> avisos, List<String> erros) {
     }
 }

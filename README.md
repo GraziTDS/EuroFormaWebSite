@@ -15,9 +15,20 @@ Três perfis de acesso — **Educando**, **Educador/Coordenador** e **Administra
 login real com recuperação de senha por e-mail, painel e boletim do educando, inscrição em eventos,
 assistente de IA para ajudar o educando a melhorar o currículo, cadastro e gestão de educandos
 (status/frequência com auditoria — exclusivo do Administrador), importação/exportação em Excel de
-educandos e relatórios, upload real de currículo (PDF), gestão de usuários (educadores), chamada de
-presença por turma (exclusiva do Educador/Coordenador) e relatórios institucionais com gráficos
-(matrículas por curso, frequência, conclusão & evasão, motivos de desistência).
+educandos e relatórios, upload real de currículo (PDF), gestão de usuários (educadores, com edição de
+perfil pelo Administrador), chamada de presença por turma (exclusiva do Educador/Coordenador) e
+relatórios institucionais com gráficos (matrículas por curso, frequência, conclusão & evasão, motivos
+de desistência).
+
+### Importação/exportação em Excel
+
+O modelo de planilha (botão "Baixar modelo") já usa o mesmo formato de cabeçalho da planilha
+institucional "BASE DE DADOS EDUCACIONAL" do Instituto (Nome completo, CPF, RG, Nome Social, Gênero,
+Raça, Região, Nome/Contato do Responsável, endereço etc.) — o reconhecimento de colunas na importação é
+feito pelo **nome do cabeçalho**, não pela posição, então a própria planilha institucional já preenchida
+pode ser importada diretamente. Como a planilha institucional não tem coluna de e-mail (necessária para
+login), quando ela está ausente é gerado um e-mail temporário a partir do CPF e a linha volta como um
+aviso, pedindo a atualização do cadastro para liberar o acesso real do educando.
 
 ## Como rodar localmente
 

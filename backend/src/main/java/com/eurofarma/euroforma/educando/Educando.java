@@ -39,6 +39,23 @@ public class Educando {
 
     private LocalDate nascimento;
 
+    private String rg;
+
+    @Column(name = "nome_social")
+    private String nomeSocial;
+
+    private String genero;
+
+    private String raca;
+
+    private String regiao;
+
+    @Column(name = "nome_responsavel")
+    private String nomeResponsavel;
+
+    @Column(name = "contato_responsavel")
+    private String contatoResponsavel;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;

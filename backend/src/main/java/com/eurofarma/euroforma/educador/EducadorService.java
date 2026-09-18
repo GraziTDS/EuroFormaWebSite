@@ -41,6 +41,28 @@ public class EducadorService {
         usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public EducadorDto atualizar(Long id, AtualizarEducadorRequest request) {
+        Educador educador = educadorRepository.findById(id)
+                .orElseThrow(() -> ApiException.naoEncontrado("Educador não encontrado: " + id));
+
+        Usuario usuario = educador.getUsuario();
+        if (!usuario.getEmail().equalsIgnoreCase(request.email())
+                && usuarioRepository.existsByEmailIgnoreCase(request.email())) {
+            throw ApiException.conflito("Já existe um usuário cadastrado com este e-mail");
+        }
+
+        usuario.setNome(request.nome());
+        usuario.setEmail(request.email());
+        usuarioRepository.save(usuario);
+
+        educador.setPapel(request.papel());
+        educador.setTurmas(request.turmas());
+        educadorRepository.save(educador);
+
+        return EducadorDto.de(educador);
+    }
+
     public EducadorDashboardDto dashboard() {
         List<Educando> educandos = educandoRepository.findAll();
 

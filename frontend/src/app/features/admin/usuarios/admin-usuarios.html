@@ -5,16 +5,49 @@
 
   <app-section-card titulo="Educadores e coordenadores">
     @for (educador of educadores(); track educador.id) {
-      <div class="linha">
-        <div class="linha__info">
-          <strong>{{ educador.nome }}</strong>
-          <span>{{ educador.email }} · {{ educador.papel }} · {{ educador.turmas }} turma(s)</span>
-          <span>Último acesso: {{ educador.ultimoAcesso ? (educador.ultimoAcesso | date: 'dd/MM/yyyy') : '—' }}</span>
+      @if (editandoId() === educador.id) {
+        <div class="linha linha--edicao">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput [(ngModel)]="rascunho.nome" name="nome" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput type="email" [(ngModel)]="rascunho.email" name="email" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Papel</mat-label>
+            <mat-select [(ngModel)]="rascunho.papel" name="papel">
+              <mat-option value="EDUCADOR">Educador</mat-option>
+              <mat-option value="COORDENADOR">Coordenador</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Turmas</mat-label>
+            <input matInput type="number" min="0" [(ngModel)]="rascunho.turmas" name="turmas" />
+          </mat-form-field>
+          <div class="linha__acoes-edicao">
+            <button mat-flat-button color="primary" [disabled]="salvando()" (click)="salvar(educador.id)">
+              {{ salvando() ? 'Salvando...' : 'Salvar' }}
+            </button>
+            <button mat-stroked-button [disabled]="salvando()" (click)="cancelarEdicao()">Cancelar</button>
+          </div>
         </div>
-        <mat-slide-toggle [checked]="educador.ativo" (change)="alternarAtivo(educador)">
-          {{ educador.ativo ? 'Ativo' : 'Inativo' }}
-        </mat-slide-toggle>
-      </div>
+      } @else {
+        <div class="linha">
+          <div class="linha__info">
+            <strong>{{ educador.nome }}</strong>
+            <span>{{ educador.email }} · {{ educador.papel }} · {{ educador.turmas }} turma(s)</span>
+            <span>Último acesso: {{ educador.ultimoAcesso ? (educador.ultimoAcesso | date: 'dd/MM/yyyy') : '—' }}</span>
+          </div>
+          <div class="linha__acoes">
+            <button mat-stroked-button (click)="editar(educador)">Editar</button>
+            <mat-slide-toggle [checked]="educador.ativo" (change)="alternarAtivo(educador)">
+              {{ educador.ativo ? 'Ativo' : 'Inativo' }}
+            </mat-slide-toggle>
+          </div>
+        </div>
+      }
     }
   </app-section-card>
 </div>

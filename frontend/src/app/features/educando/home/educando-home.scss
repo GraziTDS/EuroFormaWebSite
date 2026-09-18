@@ -1,3 +1,70 @@
+.hero {
+  background: linear-gradient(135deg, var(--euro-blue-dark) 0%, var(--euro-blue) 100%);
+  border-radius: 14px;
+  padding: 24px 28px;
+  color: white;
+}
+
+.hero__topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero__saudacao {
+  display: block;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.hero h1 {
+  margin: 2px 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.hero__curso-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.hero__moodle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  color: var(--euro-blue-dark);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.9);
+  }
+}
+
 .home__progresso-valor {
   font-size: 12px;
   color: var(--text-secondary);

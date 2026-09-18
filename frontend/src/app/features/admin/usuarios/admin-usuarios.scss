@@ -25,3 +25,27 @@
     color: var(--text-secondary);
   }
 }
+
+.linha__acoes {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.linha--edicao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+
+  mat-form-field {
+    flex: 1 1 160px;
+  }
+}
+
+.linha__acoes-edicao {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}

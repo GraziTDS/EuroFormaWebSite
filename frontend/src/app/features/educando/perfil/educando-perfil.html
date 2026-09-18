@@ -6,10 +6,22 @@
       <div class="campo"><span>E-mail</span><strong>{{ p.email }}</strong></div>
       <div class="campo"><span>Telefone</span><strong>{{ p.telefone ?? '—' }}</strong></div>
       <div class="campo"><span>CPF</span><strong>{{ p.cpf ?? '—' }}</strong></div>
+      <div class="campo"><span>RG</span><strong>{{ p.rg ?? '—' }}</strong></div>
       <div class="campo"><span>Nascimento</span><strong>{{ p.nascimento ?? '—' }}</strong></div>
+      <div class="campo"><span>Nome social</span><strong>{{ p.nomeSocial ?? '—' }}</strong></div>
+      <div class="campo"><span>Gênero</span><strong>{{ p.genero ?? '—' }}</strong></div>
+      <div class="campo"><span>Raça</span><strong>{{ p.raca ?? '—' }}</strong></div>
+      <div class="campo"><span>Região</span><strong>{{ p.regiao ?? '—' }}</strong></div>
       <div class="campo"><span>Curso atual</span><strong>{{ p.curso }}</strong></div>
       <div class="campo"><span>LinkedIn</span><strong>{{ p.linkedin ?? '—' }}</strong></div>
     </app-section-card>
+
+    @if (p.nomeResponsavel || p.contatoResponsavel) {
+      <app-section-card titulo="Responsável">
+        <div class="campo"><span>Nome</span><strong>{{ p.nomeResponsavel ?? '—' }}</strong></div>
+        <div class="campo"><span>Contato</span><strong>{{ p.contatoResponsavel ?? '—' }}</strong></div>
+      </app-section-card>
+    }
 
     @if (p.endereco) {
       <app-section-card titulo="Endereço">

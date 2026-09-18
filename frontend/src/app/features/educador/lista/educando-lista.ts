@@ -88,8 +88,9 @@ export class EducandoLista implements OnInit {
       next: (resultado) => {
         this.importando.set(false);
         const mensagem = `${resultado.criados} educando(s) importado(s).` +
+          (resultado.avisos.length > 0 ? ` ${resultado.avisos.length} com aviso (ex.: e-mail temporário).` : '') +
           (resultado.erros.length > 0 ? ` ${resultado.erros.length} linha(s) com erro.` : '');
-        this.snackBar.open(mensagem, 'Fechar', { duration: 5000 });
+        this.snackBar.open(mensagem, 'Fechar', { duration: 6000 });
         this.buscar();
       },
       error: (err) => {

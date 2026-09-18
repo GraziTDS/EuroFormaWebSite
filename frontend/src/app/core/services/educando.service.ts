@@ -68,9 +68,12 @@ export class EducandoService {
     return this.http.get('/api/educandos/modelo-importacao-excel', { responseType: 'blob' });
   }
 
-  importarExcel(arquivo: File): Observable<{ criados: number; erros: string[] }> {
+  importarExcel(arquivo: File): Observable<{ criados: number; avisos: string[]; erros: string[] }> {
     const formData = new FormData();
     formData.append('arquivo', arquivo);
-    return this.http.post<{ criados: number; erros: string[] }>('/api/educandos/importar-excel', formData);
+    return this.http.post<{ criados: number; avisos: string[]; erros: string[] }>(
+      '/api/educandos/importar-excel',
+      formData,
+    );
   }
 }

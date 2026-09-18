@@ -1,11 +1,23 @@
 @if (perfil(); as p) {
   <div class="euro-page">
-    <app-section-card titulo="Olá, {{ p.nome.split(' ')[0] }}!" [subtitulo]="p.curso">
-      <a acao mat-stroked-button [href]="urlMoodle" target="_blank" rel="noopener noreferrer">
-        <mat-icon>open_in_new</mat-icon>
-        Acessar Moodle
-      </a>
-      <p>Progresso do curso</p>
+    <div class="hero">
+      <div class="hero__topo">
+        <div>
+          <span class="hero__saudacao">Olá,</span>
+          <h1>{{ p.nome }}</h1>
+          <span class="hero__curso-badge">
+            <mat-icon>menu_book</mat-icon>
+            {{ p.curso }}
+          </span>
+        </div>
+        <a class="hero__moodle" [href]="urlMoodle" target="_blank" rel="noopener noreferrer">
+          <mat-icon>open_in_new</mat-icon>
+          Acessar Moodle
+        </a>
+      </div>
+    </div>
+
+    <app-section-card titulo="Progresso do curso">
       <mat-progress-bar mode="determinate" [value]="p.progresso" />
       <span class="home__progresso-valor">{{ p.progresso }}%</span>
       <a mat-stroked-button routerLink="/educando/perfil">Ver meu perfil completo</a>

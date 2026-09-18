@@ -88,6 +88,14 @@ public class EducandoService {
                 .usuario(usuario)
                 .cpf(blankToNull(request.cpf()))
                 .telefone(blankToNull(request.telefone()))
+                .rg(blankToNull(request.rg()))
+                .nomeSocial(blankToNull(request.nomeSocial()))
+                .genero(blankToNull(request.genero()))
+                .raca(blankToNull(request.raca()))
+                .regiao(blankToNull(request.regiao()))
+                .nomeResponsavel(blankToNull(request.nomeResponsavel()))
+                .contatoResponsavel(blankToNull(request.contatoResponsavel()))
+                .endereco(montarEndereco(request))
                 .curso(curso)
                 .progresso(0)
                 .media(java.math.BigDecimal.ZERO)
@@ -179,5 +187,16 @@ public class EducandoService {
 
     private String blankToNull(String valor) {
         return (valor == null || valor.isBlank()) ? null : valor;
+    }
+
+    private Endereco montarEndereco(CadastroEducandoRequest request) {
+        String cep = blankToNull(request.cep());
+        String rua = blankToNull(request.rua());
+        String bairro = blankToNull(request.bairro());
+        String cidade = blankToNull(request.cidade());
+        if (cep == null && rua == null && bairro == null && cidade == null) {
+            return null;
+        }
+        return Endereco.builder().cep(cep).rua(rua).bairro(bairro).cidade(cidade).build();
     }
 }

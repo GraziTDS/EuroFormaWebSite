@@ -32,4 +32,10 @@ public class EducadorController {
         educadorService.atualizarAtivo(id, request.ativo());
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/api/educadores/{id}")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    public EducadorDto atualizar(@PathVariable Long id, @Valid @RequestBody AtualizarEducadorRequest request) {
+        return educadorService.atualizar(id, request);
+    }
 }

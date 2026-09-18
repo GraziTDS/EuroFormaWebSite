@@ -84,6 +84,13 @@ export interface EducandoPerfil {
   cpf: string | null;
   nascimento: string | null;
   idade: number | null;
+  rg: string | null;
+  nomeSocial: string | null;
+  genero: string | null;
+  raca: string | null;
+  regiao: string | null;
+  nomeResponsavel: string | null;
+  contatoResponsavel: string | null;
   curso: string;
   progresso: number;
   media: number;

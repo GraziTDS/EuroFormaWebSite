@@ -9,6 +9,17 @@ public record CadastroEducandoRequest(
         String cpf,
         String telefone,
         @NotBlank @Email String email,
-        @NotNull Long cursoId
+        @NotNull Long cursoId,
+        String rg,
+        String nomeSocial,
+        String genero,
+        String raca,
+        String regiao,
+        String nomeResponsavel,
+        String contatoResponsavel,
+        String cep,
+        String rua,
+        String bairro,
+        String cidade
 ) {
 }
