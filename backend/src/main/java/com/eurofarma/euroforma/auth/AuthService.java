@@ -52,7 +52,13 @@ public class AuthService {
     @Transactional
     public void enviarConviteDefinicaoSenha(Usuario usuario) {
         String token = criarTokenRedefinicao(usuario);
-        mailService.enviarEmailBoasVindas(usuario.getEmail(), usuario.getNome(), token);
+        try {
+            mailService.enviarEmailBoasVindas(usuario.getEmail(), usuario.getNome(), token);
+        } catch (Exception ex) {
+            // Falha no envio (ex.: servidor de e-mail indisponível) não deve impedir o cadastro do usuário;
+            // o token de definição de senha já foi salvo e pode ser reenviado depois via "esqueci minha senha".
+            log.warn("Não foi possível enviar o e-mail de boas-vindas para {}: {}", usuario.getEmail(), ex.getMessage());
+        }
     }
 
     private String criarTokenRedefinicao(Usuario usuario) {

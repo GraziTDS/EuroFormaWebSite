@@ -5,6 +5,7 @@ import com.eurofarma.euroforma.curso.Curso;
 import com.eurofarma.euroforma.curso.CursoRepository;
 import com.eurofarma.euroforma.educando.dto.CadastroEducandoRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EducandoExcelService {
 
     private static final List<String> COLUNAS_EXPORTACAO = List.of(
@@ -239,7 +241,7 @@ public class EducandoExcelService {
 
                     linhas.add(new LinhaImportada(numeroLinha, nome, cpf, cursoNome, email, emailTemporario, null));
                 } catch (Exception ex) {
-                    linhas.add(new LinhaImportada(numeroLinha, nome, cpf, cursoNome, null, false, ex.getMessage()));
+                    linhas.add(new LinhaImportada(numeroLinha, nome, cpf, cursoNome, null, false, mensagemAmigavel(ex, numeroLinha)));
                 }
             }
         } catch (IOException e) {
@@ -278,6 +280,19 @@ public class EducandoExcelService {
         }
         String valor = formatter.formatCellValue(row.getCell(indice)).trim();
         return valor.isBlank() ? null : valor;
+    }
+
+    /**
+     * Mensagens de {@link ApiException} já são escritas para o usuário final (ex.: "Curso não encontrado: X")
+     * e são exibidas como estão. Qualquer outra falha (erro técnico/infraestrutura, ex.: banco ou e-mail fora do
+     * ar) é registrada no log do servidor e traduzida para uma mensagem genérica, para não expor detalhes internos.
+     */
+    private String mensagemAmigavel(Exception ex, int numeroLinha) {
+        if (ex instanceof ApiException) {
+            return ex.getMessage();
+        }
+        log.error("Falha inesperada ao importar a linha {} da planilha", numeroLinha, ex);
+        return "Não foi possível importar esta linha por um erro interno do sistema. Tente novamente ou contate o suporte.";
     }
 
     private String gerarEmailTemporario(String cpf) {
