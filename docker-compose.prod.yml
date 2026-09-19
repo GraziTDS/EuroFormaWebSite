@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: euroforma-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: euroforma
+      POSTGRES_USER: euroforma
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no arquivo .env}
+    volumes:
+      - euroforma-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U euroforma -d euroforma"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: euroforma-app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "80:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: euroforma
+      DB_USER: euroforma
+      DB_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no arquivo .env}
+      DB_SSLMODE: disable
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET no arquivo .env}
+      MAIL_REMETENTE: ${MAIL_REMETENTE:-no-reply@euroforma.local}
+      FRONTEND_RESET_SENHA_URL: ${FRONTEND_RESET_SENHA_URL:?defina FRONTEND_RESET_SENHA_URL no arquivo .env}
+      STORAGE_DIR: /app/uploads
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - euroforma-uploads:/app/uploads
+
+volumes:
+  euroforma-postgres-data:
+  euroforma-uploads:
